@@ -1,10 +1,12 @@
 package com.example.weather.core.Di
 
+import com.example.weather.HomeScreen.UI_Presentation.HomeScreenVM
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApi
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApiImpl
 import com.example.weather.HomeScreen.data.remote.Repository.WeatherRepositoryImpl
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
 import com.example.weather.core.NetworkClient
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
@@ -18,5 +20,5 @@ val appModule = module {
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
 
     // You can also add your ViewModel here later
-    // viewModel { WeatherViewModel(get()) }
+     viewModel { HomeScreenVM(get()) }
 }
