@@ -26,9 +26,6 @@ class HomeScreenVM(
     }
 
 
-    init {
-        getDefaultWeather("mumbai")
-    }
 
 
 

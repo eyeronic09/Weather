@@ -5,7 +5,7 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import java.io.IOException
 
-fun mapToWeatherError(e: Throwable) : WeatherError{
+fun mapToWeatherError(e: Throwable) : WeatherError {
     return when (e) {
         is ClientRequestException -> {
             when (e.response.status.value) {

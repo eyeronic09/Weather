@@ -12,6 +12,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun WeatherScreen(viewModel: HomeScreenVM = koinViewModel()){
+
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
