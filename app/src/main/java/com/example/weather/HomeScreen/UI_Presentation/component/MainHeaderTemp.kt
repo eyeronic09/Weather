@@ -19,13 +19,17 @@ fun MainHeaderTemp(weather: Weather) {
             .fillMaxWidth()
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+
+    ) {
         Text(
             modifier = Modifier,
             text = weather.temperatureC.toString() + " C",
             style = MaterialTheme.typography.displayMedium
         )
-        Text(weather.conditionText)
+        Text(
+            text = weather.conditionText,
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
 }
 

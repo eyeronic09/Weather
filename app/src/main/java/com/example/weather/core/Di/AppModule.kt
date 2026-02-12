@@ -20,5 +20,5 @@ val appModule = module {
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
 
     // You can also add your ViewModel here later
-     viewModel { HomeScreenVM(get()) }
+     factory { HomeScreenVM(get()) }
 }

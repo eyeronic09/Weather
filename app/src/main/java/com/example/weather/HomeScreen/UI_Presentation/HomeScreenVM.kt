@@ -2,8 +2,11 @@ package com.example.weather.HomeScreen.UI_Presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class HomeScreenVM(
     private val repository: WeatherRepository
-) : ViewModel() {
+) : ScreenModel {
     private val _Uistate = MutableStateFlow(HomeScreenState())
     val uiState : StateFlow<HomeScreenState> = _Uistate.asStateFlow()
 
@@ -26,15 +29,12 @@ class HomeScreenVM(
     }
 
 
-
-
-
-    private fun getDefaultWeather(cityInput: String){
-        viewModelScope.launch {
+    private fun getDefaultWeather(cityInput: String) {
+        screenModelScope.launch {
             _Uistate.update { it.copy(isLoading = true, error = null) }
-            
+
             val result = repository.getCurrentWeather(cityInput)
-            
+
             _Uistate.update { state ->
                 when (result) {
                     is Result.Success -> state.copy(
@@ -42,6 +42,7 @@ class HomeScreenVM(
                         weather = result.data,
                         error = null
                     )
+
                     is Result.Error -> state.copy(
                         isLoading = false,
                         weather = null,
@@ -51,6 +52,5 @@ class HomeScreenVM(
             }
         }
     }
-
-
 }
+

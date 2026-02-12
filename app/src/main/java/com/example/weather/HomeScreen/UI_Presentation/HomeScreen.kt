@@ -1,23 +1,36 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.koinNavigatorScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.koin.koinNavigatorScreenModel
+import cafe.adriel.voyager.navigator.currentOrThrow
 
-@Composable
-fun WeatherScreen(viewModel: HomeScreenVM = koinViewModel()){
+class HomeScreen : Screen {
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        val  ViewModel  = navigator.koinNavigatorScreenModel<HomeScreenVM>()
 
+        Scaffold(modifier = Modifier) { innerPadding ->
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.padding(innerPadding)
+            ) {
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(uiState.weather.toString())
+            }
+        }
     }
+
 
 }
