@@ -6,4 +6,5 @@ sealed class WeatherError {
     data object Server : WeatherError()
     data object Network : WeatherError()
     data object Unknown : WeatherError()
+    data class ApiError(val message: String) : WeatherError()
 }
