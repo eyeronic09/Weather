@@ -44,7 +44,7 @@ private fun MainHeaderTempPreview() {
         region = "i dont know",
         country = "Germany",
         localtimeEpoch = 323013200,
-        temperatureC = 32,
+        temperatureC = 32.toFloat(),
         conditionText = "Light rain",
         conditionIconUrl = "er",
         windKph = 23F,

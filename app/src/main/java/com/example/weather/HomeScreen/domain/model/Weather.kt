@@ -8,7 +8,7 @@ data class Weather(
     val region: String = "",
     val country: String = "",
     val localtimeEpoch: Long = 0L,
-    val temperatureC: Int,
+    val temperatureC: Float,
     val conditionText: String,
     val conditionIconUrl: String,
     val windKph: Float,
