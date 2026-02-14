@@ -9,7 +9,7 @@ import io.ktor.client.request.parameter
 
 class WeatherApiImpl(private val client: HttpClient) : WeatherApi {
 
-    private val api = BuildConfig.Weather_API_KEY
+    private val api = BuildConfig.WEATHER_API_KEY
     private val base_url = "https://api.weatherapi.com/v1"
 
     override suspend fun getWeatherApi(city: String): WeatherResponseDto {

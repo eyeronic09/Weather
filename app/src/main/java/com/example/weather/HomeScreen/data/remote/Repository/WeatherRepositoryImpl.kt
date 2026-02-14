@@ -1,5 +1,6 @@
 package com.example.weather.HomeScreen.data.remote.Repository
 
+import android.util.Log
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApi
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.data.remote.Mapper.mapToWeatherError
@@ -16,9 +17,22 @@ class WeatherRepositoryImpl(
     override suspend fun getCurrentWeather(city: String): Result<Weather , WeatherError> {
         return try {
             val response = api.getWeatherApi(city)
-            Result.Success(response.toDomain())
+            
+            // Check if the response contains an error
+            if (response.error != null) {
+                return Result.Error(errorMessage = WeatherError.ApiError(response.error.message))
+            }
+            
+            // Check if required data is present
+            if (response.location == null || response.current == null) {
+                return Result.Error(errorMessage = WeatherError.Unknown)
+            }
+            Log.d("Tagresponse" , response.toString())
+            return Result.Success(data = response.toDomain())
         } catch (e: ClientRequestException) {
-            Result.Error(mapToWeatherError(e))
+            Result.Error(errorMessage = mapToWeatherError(e))
+        } catch (e: Exception) {
+            Result.Error(errorMessage = mapToWeatherError(e))
         }
     }
 }

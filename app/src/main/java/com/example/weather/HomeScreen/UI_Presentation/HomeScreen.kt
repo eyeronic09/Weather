@@ -1,52 +1,89 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridItemScope
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.weather.HomeScreen.UI_Presentation.component.MainHeaderTemp
-import org.koin.androidx.compose.koinViewModel // Critical import
+import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
+import org.koin.androidx.compose.koinViewModel
 
 class HomeScreen : Screen {
 
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
         val viewmodel = koinViewModel<HomeScreenVM>()
         val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
 
-        Scaffold { innerPadding ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(innerPadding)
-            ) {
-
-                header {
-                    uiState.weather?.let { MainHeaderTemp(it) }
+        Scaffold(
+            modifier = Modifier.fillMaxSize()
+        ) { innerPadding ->
+            when {
+                uiState.isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                        Text(
+                            text = "Loading weather...",
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                    }
                 }
+                
+                uiState.error != null -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Error",
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = uiState.error.toString(),
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    }
+                }
+                
+                uiState.weather != null -> {
 
-                items(30) { index ->
-
-                    Text("Card $index") // Placeholder
+                }
+                
+                else -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No weather data available")
+                    }
                 }
             }
         }
     }
-}
-
-fun LazyGridScope.header(
-    content: @Composable LazyGridItemScope.() -> Unit
-) {
-    item(span = { GridItemSpan(this.maxLineSpan) }, content = content)
 }

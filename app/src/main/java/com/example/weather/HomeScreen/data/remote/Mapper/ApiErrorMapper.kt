@@ -14,7 +14,6 @@ fun mapToWeatherError(e: Throwable) : WeatherError {
                 else -> WeatherError.Unknown
             }
         }
-
         is ServerResponseException -> WeatherError.Server
         is IOException -> WeatherError.Network
         else -> WeatherError.Unknown
