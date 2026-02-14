@@ -1,7 +1,4 @@
-package com.example.weather.HomeScreen.domain.model
-
-
-
+package com.example.weather.domain.model
 
 data class Weather(
     val cityName: String,
@@ -11,5 +8,12 @@ data class Weather(
     val conditionText: String,
     val conditionIconUrl: String,
     val windKph: Float,
-    val humidity: Long
+    val humidity: Long,
+    val hourly: List<HourlyItem>
+)
+
+data class HourlyItem(
+    val time: String,
+    val tempC: Float,
+    val conditionText: String
 )
