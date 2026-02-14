@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.weather.HomeScreen.domain.model.Weather
+import com.example.weather.domain.model.Weather
 
 @Composable
 fun MainHeaderTemp(weather: Weather) {
@@ -47,7 +47,8 @@ private fun MainHeaderTempPreview() {
         conditionText = "Light rain",
         conditionIconUrl = "er",
         windKph = 23F,
-        humidity = 23
+        humidity = 23,
+        hourly = emptyList(),
     )
     MainHeaderTemp(weather)
 }

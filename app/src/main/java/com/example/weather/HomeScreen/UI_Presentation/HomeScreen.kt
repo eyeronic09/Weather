@@ -1,21 +1,14 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridItemScope
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.example.weather.HomeScreen.UI_Presentation.component.MainHeaderTemp
+import com.example.weather.HomeScreen.UI_Presentation.component.HourlyFourCastCard
+import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
 import org.koin.androidx.compose.koinViewModel // Critical import
 
 class HomeScreen : Screen {
@@ -24,29 +17,45 @@ class HomeScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewmodel = koinViewModel<HomeScreenVM>()
-        val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
 
-        Scaffold { innerPadding ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(innerPadding)
-            ) {
+        WeatherScreenRoot(
+            viewmodel = viewmodel,
+            onScreenClick = { event ->  }
+        )
 
-                header {
-                    uiState.weather?.let { MainHeaderTemp(it) }
-                }
-
-                items(30) { index ->
-
-                    Text("Card $index") // Placeholder
-                }
-            }
-        }
     }
 }
 
-fun LazyGridScope.header(
-    content: @Composable LazyGridItemScope.() -> Unit
-) {
-    item(span = { GridItemSpan(this.maxLineSpan) }, content = content)
+
+@Composable
+fun WeatherScreenRoot(
+    viewmodel: HomeScreenVM = koinViewModel(),
+    onScreenClick: (onEvent: HomeScreenEvent.SearchWeather) -> Unit,
+
+
+    ) {
+    val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
+
+    WeatherScreenRootContent(
+        uiState = uiState,
+    )
+}
+
+@Composable
+fun WeatherScreenRootContent(
+    uiState: HomeScreenState,
+
+    ) {
+    Column {
+        uiState.currentWeather?.let { weather ->
+            WeatherDetailsCard(
+                weather = weather
+            )
+        }
+        uiState.hourlyWeather?.let { hourly ->
+            HourlyFourCastCard(
+                hourly = hourly
+            )
+        }
+    }
 }

@@ -1,10 +1,13 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
-import com.example.weather.HomeScreen.domain.model.Weather
+
+import com.example.weather.domain.model.HourlyItem
+import com.example.weather.domain.model.Weather
 
 data class HomeScreenState(
     val isLoading: Boolean = false,
-    val weather: Weather? = null,
+    val currentWeather: Weather? = null,
+    val hourlyWeather: List<HourlyItem>? = null,
     val error: String? = null,
     val searchWeatherCity : String = ""
 )

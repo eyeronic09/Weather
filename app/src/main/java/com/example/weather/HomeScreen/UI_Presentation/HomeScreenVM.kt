@@ -2,9 +2,6 @@ package com.example.weather.HomeScreen.UI_Presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,12 +38,14 @@ class HomeScreenVM(
                 when (result) {
                     is Result.Success -> state.copy(
                         isLoading = false,
-                        weather = result.data,
+                        currentWeather = result.data,
+                        hourlyWeather = result.data.hourly,
                         error = null
                     )
                     is Result.Error -> state.copy(
                         isLoading = false,
-                        weather = null,
+                        currentWeather = null,
+                        hourlyWeather = null,
                         error = result.errorMessage.toString()
                     )
                 }
