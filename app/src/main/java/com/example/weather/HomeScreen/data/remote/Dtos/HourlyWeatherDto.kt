@@ -14,11 +14,11 @@ data class Forecastday(
     val date: String,
     @SerialName("date_epoch")
     val dateEpoch: Long,
-    val hour: List<Hour>,
+    val hour: List<HourlyWeatherDto>,
 )
 
 @Serializable
-data class Hour(
+data class HourlyWeatherDto(
     @SerialName("time_epoch")
     val timeEpoch: Long,
     val time: String,
@@ -27,9 +27,6 @@ data class Hour(
     @SerialName("temp_f")
     val tempF: Double,
     @SerialName("is_day")
-    val isDay: Long,
-    @SerialName("condition")
+    val isDay: Int,
     val condition: Condition,
-    @SerialName("wind_mph")
-    val windMph: Double,
 )

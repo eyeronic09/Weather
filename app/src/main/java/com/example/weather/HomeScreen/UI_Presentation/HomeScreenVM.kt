@@ -1,5 +1,6 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
@@ -33,13 +34,14 @@ class HomeScreenVM(
             _Uistate.update { it.copy(isLoading = true, error = null) }
             
             val result = repository.getCurrentWeather(cityInput)
+            Log.d(result.toString() , result.toString())
             
             _Uistate.update { state ->
                 when (result) {
                     is Result.Success -> state.copy(
                         isLoading = false,
                         currentWeather = result.data,
-                        hourlyWeather = result.data.hourly,
+                        hourlyWeather = result.data.forcastday,
                         error = null
                     )
                     is Result.Error -> state.copy(

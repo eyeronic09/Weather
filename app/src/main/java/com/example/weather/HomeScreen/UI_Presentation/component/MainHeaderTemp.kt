@@ -36,6 +36,7 @@ fun MainHeaderTemp(weather: Weather) {
 
 
 
+
 @Composable
 @Preview(showBackground = true)
 private fun MainHeaderTempPreview() {
@@ -48,7 +49,7 @@ private fun MainHeaderTempPreview() {
         conditionIconUrl = "er",
         windKph = 23F,
         humidity = 23,
-        hourly = emptyList(),
+        forcastday = emptyList(),
     )
     MainHeaderTemp(weather)
 }
