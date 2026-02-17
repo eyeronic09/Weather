@@ -1,17 +1,21 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -21,7 +25,6 @@ import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCa
 import org.koin.androidx.compose.koinViewModel // Critical import
 
 class HomeScreen : Screen {
-
     @Composable
     override fun Content() {
         WeatherRoute()
@@ -33,46 +36,76 @@ class HomeScreen : Screen {
 fun WeatherRoute(
     viewModel: HomeScreenVM = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    WeatherScreenRoot(
-        uiState = uiState,
-        onEvent = viewModel::onEvent
+    WeatherScreen(
+        state = state,
+        onAction = viewModel::onEvent
     )
 }
 
 @Composable
-fun WeatherScreenRoot(
-    uiState: HomeScreenState,
-    onEvent: (HomeScreenEvent) -> Unit
+fun WeatherScreen(
+    state: HomeScreenState,
+    onAction: (HomeScreenEvent) -> Unit
 ) {
-    Scaffold { padding ->
-        WeatherScreenRootContent(
-            uiState = uiState,
+    Scaffold(
+        topBar = {  },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { onAction(HomeScreenEvent.SearchWeather("")) }
+            ) { Text("Go") }
+        }
+    ) { padding ->
+
+        WeatherContent(
+            state = state,
             modifier = Modifier.padding(padding),
-            onEvent = onEvent
+            onAction = onAction
         )
     }
 }
 
 @Composable
-fun WeatherScreenRootContent(
-    uiState: HomeScreenState,
-    modifier: Modifier = Modifier,
-    onEvent: (HomeScreenEvent) -> Unit
+fun WeatherContent(
+    state: HomeScreenState,
+    modifier: Modifier,
+    onAction: (HomeScreenEvent) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         when {
-            uiState.isLoading -> TODO()
-            uiState.error != null -> TODO()
-            uiState.currentWeather != null -> {
-                WeatherDetailsCard(weather = uiState.currentWeather)
-
-                uiState.hourlyWeather?.let {
-                    HourlyFourCastCard(hourly = it)
+            state.isLoading -> {
+                CircularProgressIndicator()
+            }
+            state.error != null -> {
+                Text(
+                    text = state.error,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+            state.currentWeather != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    WeatherDetailsCard(weather = state.currentWeather)
+                    HourlyFourCastCard(
+                        hourly = state.hourlyWeather!!
+                    )
                 }
             }
-            else -> TODO()
+            else -> {
+                Text(
+                    text = "Search for a city to see weather",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

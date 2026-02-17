@@ -14,7 +14,8 @@ data class Weather(
 )
 
 data class HourlyItem(
-    val time: String,
-    val tempC: Float,
-    val conditionText: String
+    val time: String = "",
+    val tempC: Float = 0f,
+    val icon : String = "",
+    val conditionText: String = ""
 )

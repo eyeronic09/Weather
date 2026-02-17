@@ -28,7 +28,8 @@ object Mapper {
         return HourlyItem(
             time = dto.time,
             tempC = dto.tempC.toFloat(),
-            conditionText = dto.condition.text
+            conditionText = dto.condition.text,
+            icon = dto.condition.icon,
         )
     }
 
