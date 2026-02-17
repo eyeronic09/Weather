@@ -1,6 +1,8 @@
 package com.example.weather.HomeScreen.UI_Presentation.component
 
+
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cloud
@@ -14,25 +16,22 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.weather.domain.model.Weather
 
 @Composable
-fun WeatherIcon(
-    iconUrl: String,
-    contentDescription: String?,
-    modifier: Modifier = Modifier
-) {
+fun getWeatherIcon(weather: Weather) {
     SubcomposeAsyncImage(
+        modifier = Modifier.size(220.dp).fillMaxWidth(),
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https:$iconUrl")
+            .data("https:${weather.conditionIconUrl}")
             .crossfade(true)
             .build(),
-        contentDescription = contentDescription,
+        contentDescription = "Weather Icon",
         loading = {
             Box(
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
                     strokeWidth = 2.dp
                 )
             }
@@ -41,8 +40,8 @@ fun WeatherIcon(
             Icon(
                 imageVector = Icons.Default.Cloud,
                 contentDescription = "Weather icon fallback",
+                modifier = Modifier.size(100.dp)
             )
-        },
-        modifier = modifier
+        }
     )
 }

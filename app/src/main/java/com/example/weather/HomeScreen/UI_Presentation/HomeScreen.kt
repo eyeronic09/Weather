@@ -1,5 +1,6 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.example.weather.HomeScreen.UI_Presentation.component.HourlyFourCastCard
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
+import com.example.weather.HomeScreen.UI_Presentation.component.getWeatherIcon
 import org.koin.androidx.compose.koinViewModel // Critical import
 
 class HomeScreen : Screen {
@@ -95,9 +97,10 @@ fun WeatherContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     WeatherDetailsCard(weather = state.currentWeather)
-                    HourlyFourCastCard(
-                        hourly = state.hourlyWeather!!
-                    )
+                    getWeatherIcon(weather = state.currentWeather)
+
+
+
                 }
             }
             else -> {
