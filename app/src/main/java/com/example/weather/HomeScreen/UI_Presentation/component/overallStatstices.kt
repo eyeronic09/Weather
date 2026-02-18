@@ -1,9 +1,12 @@
 package com.example.weather.HomeScreen.UI_Presentation.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
@@ -17,11 +20,11 @@ import com.example.weather.domain.model.Weather
 import com.example.weather.ui.theme.WeatherTheme
 
 @Composable
-fun overallStatices(weather: Weather) {
+fun OverallStatices(weather: Weather) {
     val current = mapOf(
         "Temperature" to weather.temperatureC,
         "Wind" to weather.windKph,
-        "Humidity" to weather.humidity
+        "Humidity" to weather.humidity,
     )
     Column(
         modifier = Modifier
@@ -29,9 +32,17 @@ fun overallStatices(weather: Weather) {
     ) {
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2)
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
 
         ) {
+            item (
+                span = { GridItemSpan(currentLineSpan = 2) }
+            ) {
+                HourlyFourCastCard( weather.forcastday)
+            }
+
             items(current.toList()) { (title, value) ->
                 statCard(
                     title = title,
@@ -49,10 +60,12 @@ fun statCard(
     title : String,
     value: String
 ) {
-    Card(modifier = Modifier.padding(16.dp)) {
-        Column {
-            Text(text = value)
+    Card() {
+        Column(modifier = Modifier
+            .padding(16.dp)
+            .aspectRatio(1f)) {
             Text(text = title)
+            Text(text = value)
 
         }
     }
@@ -118,7 +131,7 @@ fun OverallStaticesPreview() {
             )
         )
 
-        overallStatices(weather = sampleWeather)
+        OverallStatices(weather = sampleWeather)
     }
 }
 

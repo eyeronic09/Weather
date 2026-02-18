@@ -20,11 +20,14 @@ import com.example.weather.ui.theme.WeatherTheme
 
 @Composable
 fun HourlyFourCastCard(hourly: List<HourlyItem>) {
-    OutlinedCard (modifier = Modifier){
-        Text("hourly forecast" , style = MaterialTheme.typography.labelMedium)
-        LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly){
-           items(hourly){ hourlyItem ->
-
+    OutlinedCard(modifier = Modifier) {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = "Hourly Forecast",
+            style = MaterialTheme.typography.headlineMedium
+        )
+        LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
+            items(hourly) { hourlyItem ->
                 hourlyVerticalCard(hourly = hourlyItem)
             }
         }
@@ -35,16 +38,16 @@ fun HourlyFourCastCard(hourly: List<HourlyItem>) {
 @Composable
 private fun hourlyVerticalCard(hourly: HourlyItem) {
     Column(modifier = Modifier
-                .padding(all = 16.dp)
-                .height(220.dp),
+        .padding(all = 16.dp)
+        .height(220.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
-            text = hourly.time.substring(
-                startIndex = 11
-            )
+            // Added a safety check to avoid StringIndexOutOfBoundsException
+            // when the time string is shorter than 11 characters.
+            text = if (hourly.time.length >= 11) hourly.time.substring(11) else hourly.time
         )
         WeatherIcon(
             iconUrl = hourly.icon,
@@ -62,13 +65,14 @@ private fun hourlyVerticalCard(hourly: HourlyItem) {
 @Composable
 private fun hourlyVerticalCardPreview() {
     val sampleHourlyItem = HourlyItem(
-        time = "10:00 AM",
+        // Updated preview data to match the expected "yyyy-MM-dd HH:mm" format
+        // which avoids the StringIndexOutOfBoundsException in the preview.
+        time = "2024-03-20 10:00",
         tempC = 25.5f,
-        icon = "☀️",
+        icon = "//cdn.weatherapi.com/weather/64x64/day/113.png",
         conditionText = "Sunny"
     )
     WeatherTheme {
         hourlyVerticalCard(hourly = sampleHourlyItem)
     }
 }
-

@@ -1,6 +1,7 @@
 package com.example.weather.HomeScreen.UI_Presentation.component
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cloud
@@ -43,6 +44,6 @@ fun WeatherIcon(
                 contentDescription = "Weather icon fallback",
             )
         },
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     )
 }

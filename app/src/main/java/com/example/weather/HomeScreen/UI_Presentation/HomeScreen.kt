@@ -11,7 +11,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,12 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.example.weather.HomeScreen.UI_Presentation.component.HourlyFourCastCard
+import com.example.weather.HomeScreen.UI_Presentation.component.DebugImage
+import com.example.weather.HomeScreen.UI_Presentation.component.OverallStatices
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
-import com.example.weather.HomeScreen.UI_Presentation.component.getWeatherIcon
-import org.koin.androidx.compose.koinViewModel // Critical import
+import com.example.weather.HomeScreen.UI_Presentation.component.WeatherIcon
+import org.koin.androidx.compose.koinViewModel
 
 class HomeScreen : Screen {
     @Composable
@@ -97,7 +95,9 @@ fun WeatherContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     WeatherDetailsCard(weather = state.currentWeather)
-                    getWeatherIcon(weather = state.currentWeather)
+                    WeatherIcon(
+                        iconUrl = state.currentWeather.conditionIconUrl
+                    )
 
 
 
