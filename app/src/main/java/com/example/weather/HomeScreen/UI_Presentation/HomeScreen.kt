@@ -1,6 +1,5 @@
 package com.example.weather.HomeScreen.UI_Presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,12 +15,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
-import com.example.weather.HomeScreen.UI_Presentation.component.DebugImage
 import com.example.weather.HomeScreen.UI_Presentation.component.OverallStatices
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
-import com.example.weather.HomeScreen.UI_Presentation.component.WeatherIcon
+import com.example.weather.domain.model.Weather
+import com.example.weather.domain.model.HourlyItem
 import org.koin.androidx.compose.koinViewModel
 
 class HomeScreen : Screen {
@@ -95,11 +95,7 @@ fun WeatherContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     WeatherDetailsCard(weather = state.currentWeather)
-                    WeatherIcon(
-                        iconUrl = state.currentWeather.conditionIconUrl
-                    )
-
-
+                    OverallStatices(weather = state.currentWeather)
 
                 }
             }
@@ -111,5 +107,53 @@ fun WeatherContent(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenPreview() {
+    val mockWeather = Weather(
+        cityName = "San Francisco",
+        region = "California",
+        country = "United States",
+        temperatureC = 22,
+        conditionText = "Partly cloudy",
+        conditionIconUrl = "//cdn.weatherapi.com/weather/64x64/day/116.png",
+        windKph = 15.5,
+        humidity = 65,
+        forcastday = listOf(
+            HourlyItem(
+                time = "2024-01-15 12:00",
+                tempC = 22f,
+                icon = "//cdn.weatherapi.com/weather/64x64/day/116.png",
+                conditionText = "Partly cloudy"
+            ),
+            HourlyItem(
+                time = "2024-01-15 13:00",
+                tempC = 24f,
+                icon = "//cdn.weatherapi.com/weather/64x64/day/113.png",
+                conditionText = "Sunny"
+            ),
+            HourlyItem(
+                time = "2024-01-15 14:00",
+                tempC = 23f,
+                icon = "//cdn.weatherapi.com/weather/64x64/day/119.png",
+                conditionText = "Cloudy"
+            )
+        )
+    )
+    
+    val mockState = HomeScreenState(
+        isLoading = false,
+        currentWeather = mockWeather,
+        hourlyWeather = mockWeather.forcastday,
+        error = null,
+        searchWeatherCity = "San Francisco"
+    )
+    
+    WeatherScreen(
+        state = mockState,
+        onAction = {}
+    )
 }
 

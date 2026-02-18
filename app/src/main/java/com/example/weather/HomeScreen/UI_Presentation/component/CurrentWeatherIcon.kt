@@ -29,9 +29,9 @@ fun WeatherIcon(
     iconUrl: String,
 ) {
     val finalUrl = if (iconUrl.startsWith("https")) {
-        iconUrl
+        iconUrl.replace("64x64" , "128x128")
     } else {
-        "https:$iconUrl"
+        "https:$iconUrl".replace("64x64" , "128x128")
     }
 
     Log.d("icon" , finalUrl)
@@ -61,16 +61,4 @@ fun WeatherIcon(
         }
     )
 
-}
-
-
-
-
-@Composable
-fun DebugImage() {
-    AsyncImage(
-        model = "https://cdn.weatherapi.com/weather/64x64/day/143.png",
-        contentDescription = null,
-        modifier = Modifier.size(200.dp)
-    )
 }
