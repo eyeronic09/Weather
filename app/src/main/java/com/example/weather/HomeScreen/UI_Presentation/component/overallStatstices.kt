@@ -68,11 +68,9 @@ fun OverallStatices(weather: Weather) {
                 gridState.firstVisibleItemIndex to
                 gridState.firstVisibleItemScrollOffset
             }.collect { (index, offset) ->
-                // store true or false conditions from the bellow conditions
                 val isScrolled = previousIndex > index || index != 0
                 Log.d("scroll", "Index: $index Offset: $offset Scrolled: $isScrolled")
                 previousIndex = index
-
                 showTheIcon.value  = !isScrolled
                 Log.d("showTheIconBoolean" , showTheIcon.toString())
             }
@@ -90,7 +88,6 @@ fun OverallStatices(weather: Weather) {
             ) {
                 HourlyFourCastCard( weather.forcastday)
             }
-
             items(current.toList()) { (title, value) ->
                 statCard(
                     title = title,
