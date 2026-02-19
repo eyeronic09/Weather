@@ -11,15 +11,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weather.domain.model.HourlyItem
 import com.example.weather.ui.theme.WeatherTheme
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun HourlyFourCastCard(hourly: List<HourlyItem>) {
+
+    val sdf = remember { SimpleDateFormat("HH:mm", Locale.ROOT) }
+    val currentTime = sdf.format(System.currentTimeMillis())
+
+    // Split the list into two parts:
+    // 1. The elements whose time is greater than the current time.
+    // 2. The remaining elements.
+    val (match) = hourly.partition { hourlyItem ->
+        val timeString = hourlyItem.time.substring(11, 16)
+        Log.d("lol" , hourlyItem.toString())
+        timeString > currentTime
+
+    }
+
     OutlinedCard(modifier = Modifier) {
         Text(
             modifier = Modifier.padding(16.dp),
@@ -27,7 +45,7 @@ fun HourlyFourCastCard(hourly: List<HourlyItem>) {
             style = MaterialTheme.typography.headlineMedium
         )
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
-            items(hourly) { hourlyItem ->
+            items(match) { hourlyItem ->
                 hourlyVerticalCard(hourly = hourlyItem)
             }
         }
@@ -37,6 +55,7 @@ fun HourlyFourCastCard(hourly: List<HourlyItem>) {
 
 @Composable
 private fun hourlyVerticalCard(hourly: HourlyItem) {
+
     Column(modifier = Modifier
         .padding(all = 16.dp)
         .height(220.dp),
@@ -44,10 +63,10 @@ private fun hourlyVerticalCard(hourly: HourlyItem) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        // Extract only the hh:mm part from the time string
+        val timeString = hourly.time.substring(11, 16)
         Text(
-            // Added a safety check to avoid StringIndexOutOfBoundsException
-            // when the time string is shorter than 11 characters.
-            text = if (hourly.time.length >= 11) hourly.time.substring(11) else hourly.time
+            text = timeString
         )
         WeatherIcon(
             iconUrl = hourly.icon,
@@ -65,8 +84,6 @@ private fun hourlyVerticalCard(hourly: HourlyItem) {
 @Composable
 private fun hourlyVerticalCardPreview() {
     val sampleHourlyItem = HourlyItem(
-        // Updated preview data to match the expected "yyyy-MM-dd HH:mm" format
-        // which avoids the StringIndexOutOfBoundsException in the preview.
         time = "2024-03-20 10:00",
         tempC = 25.5f,
         icon = "//cdn.weatherapi.com/weather/64x64/day/113.png",
