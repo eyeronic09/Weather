@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,8 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import com.example.weather.HomeScreen.UI_Presentation.component.OverallStatices
+import com.example.weather.HomeScreen.UI_Presentation.component.TopAppBarHeader
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
+import com.example.weather.SearchScreen.SearchScreen
+import com.example.weather.SearchScreen.Search_Screen
 import com.example.weather.domain.model.Weather
 import com.example.weather.domain.model.HourlyItem
 import org.koin.androidx.compose.koinViewModel
@@ -28,13 +32,15 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
         WeatherRoute()
+
     }
 }
 
 
 @Composable
 fun WeatherRoute(
-    viewModel: HomeScreenVM = koinViewModel()
+    viewModel: HomeScreenVM = koinViewModel(),
+
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -46,16 +52,21 @@ fun WeatherRoute(
 
 @Composable
 fun WeatherScreen(
-    state: HomeScreenState,
+    state: WeatherState,
     onAction: (HomeScreenEvent) -> Unit
 ) {
+    val navigator = LocalNavigator.current
     Scaffold(
-        topBar = {  },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction(HomeScreenEvent.SearchWeather("")) }
-            ) { Text("Go") }
-        }
+        topBar = {
+            TopAppBarHeader(
+                weather = state.currentWeather?.cityName ?: "unknow",
+                onSearch = {
+                    navigator?.push(
+                        Search_Screen()
+                    )
+                }
+            )
+        },
     ) { padding ->
 
         WeatherContent(
@@ -68,7 +79,7 @@ fun WeatherScreen(
 
 @Composable
 fun WeatherContent(
-    state: HomeScreenState,
+    state: WeatherState,
     modifier: Modifier,
     onAction: (HomeScreenEvent) -> Unit
 ) {
@@ -143,7 +154,7 @@ private fun HomeScreenPreview() {
         )
     )
     
-    val mockState = HomeScreenState(
+    val mockState = WeatherState(
         isLoading = false,
         currentWeather = mockWeather,
         hourlyWeather = mockWeather.forcastday,

@@ -14,21 +14,19 @@ import kotlinx.coroutines.launch
 class HomeScreenVM(
     private val repository: WeatherRepository
 ) : ViewModel() {
-    private val _Uistate = MutableStateFlow(HomeScreenState())
-    val uiState : StateFlow<HomeScreenState> = _Uistate.asStateFlow()
+    private val _Uistate = MutableStateFlow(WeatherState())
+    val uiState : StateFlow<WeatherState> = _Uistate.asStateFlow()
 
     fun onEvent(onEvent: HomeScreenEvent){
         when(onEvent) {
-            is HomeScreenEvent.SearchWeather -> getDefaultWeather(onEvent.city)
+            is HomeScreenEvent.SearchWeather -> TODO()
             is HomeScreenEvent.UpdateSearchCityInput -> {
                 getDefaultWeather(onEvent.city)
             }
         }
     }
 
-    init {
-        getDefaultWeather("mumbai")
-    }
+
     private fun getDefaultWeather(cityInput: String){
         viewModelScope.launch {
             _Uistate.update { it.copy(isLoading = true, error = null) }

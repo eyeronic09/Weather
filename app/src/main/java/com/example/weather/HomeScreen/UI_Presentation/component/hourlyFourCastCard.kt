@@ -25,23 +25,32 @@ import java.util.Locale
 @Composable
 fun HourlyFourCastCard(hourly: List<HourlyItem>) {
 
+    // Refactored code to calculate the current time in minutes
     val sdf = remember { SimpleDateFormat("HH:mm", Locale.ROOT) }
-    val currentTime = sdf.format(System.currentTimeMillis())
+    val currentTime = sdf.format(System.currentTimeMillis()) // Get the current time as a string in the format "HH:mm"
 
+    // Convert the current time string to minutes
     val currentMinutes = currentTime.split(":").let {
-        it[0].toInt() * 60 + it[1].toInt()
+        // Split the string into hours and minutes
+        it[0].toInt() * 60 + it[1].toInt() // Convert hours to minutes and add to minutes
     }
-    Log.d("currentMinutes" , currentMinutes.toString())
+    Log.d("currentMinutes" , currentMinutes.toString()) // Log the current time in minutes
 
-    val upcommingForCast = hourly.filter { hourlyItem ->
-        val timeString = hourlyItem.time.substring(11, 16)
-        val hourlyMinutes = timeString.split(":").let { it[0].toInt() * 60 + it[1].toInt() }
-        hourlyMinutes >= currentMinutes
+    // Filter the list of hourly items to only include items that are in the future based on the current time
+    val upcomingForCast = hourly.filter { hourlyItem ->
+        val timeString = hourlyItem.time.substring(11, 16) // Extract the time string from the item
 
+        val hourlyMinutes = timeString.split(":").let {
+            it[0].toInt() * 60 + it[1].toInt() // Convert hours to minutes and add to minutes
+        }
+         Log.d("upcoming" , "${hourlyMinutes} -> " )
+
+        // Check if the item is in the future based on the current time
+        hourlyMinutes >= currentMinutes.also {
+            Log.d("upcoming" , "${hourlyMinutes} checking to ${currentMinutes} and currentTime ${timeString} ")
+        }
     }
-
-
-
+    //note decided to usw this yet
     OutlinedCard(modifier = Modifier) {
         Text(
             modifier = Modifier.padding(16.dp),
@@ -49,7 +58,7 @@ fun HourlyFourCastCard(hourly: List<HourlyItem>) {
             style = MaterialTheme.typography.headlineMedium
         )
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
-            items(upcommingForCast) { hourlyItem ->
+            items(hourly) { hourlyItem ->
                 hourlyVerticalCard(hourly = hourlyItem)
             }
         }
