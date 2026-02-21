@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +31,8 @@ class HomeScreenVM(
     private fun getDefaultWeather(cityInput: String){
         viewModelScope.launch {
             _Uistate.update { it.copy(isLoading = true, error = null) }
+
+
             
             val result = repository.getCurrentWeather(cityInput)
             Log.d(result.toString() , result.toString())
