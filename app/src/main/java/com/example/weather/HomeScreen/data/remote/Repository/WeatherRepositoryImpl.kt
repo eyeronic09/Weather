@@ -17,13 +17,11 @@ class WeatherRepositoryImpl(
     override suspend fun getCurrentWeather(city: String): Result<Weather, WeatherError> {
         return try {
             val response = api.getWeatherApi(city)
-            
-            // Check if the response contains an error
+
             if (response.error != null) {
                 return Result.Error(errorMessage = WeatherError.ApiError(response.error.message))
             }
-            
-            // Check if required data is present
+
             Log.d("WeatherResponse", "Location: ${response.location}")
             Log.d("WeatherResponse", "Current: ${response.current}")
             Log.d("WeatherResponse", "Full response: $response")

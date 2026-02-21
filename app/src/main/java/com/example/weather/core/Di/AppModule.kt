@@ -1,8 +1,7 @@
 package com.example.weather.core.Di
 
 import com.example.weather.HomeScreen.UI_Presentation.HomeScreenVM
-import com.example.weather.SearchScreen.SearchScreenVM
-import com.example.weather.SearchScreen.Domain.SearchRepository
+import com.example.weather.SearchScreen.Ui.SearchScreenVM
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApi
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApiImpl
 import com.example.weather.HomeScreen.data.remote.Repository.WeatherRepositoryImpl
@@ -21,10 +20,6 @@ val appModule = module {
     // Provide WeatherRepository, injecting the WeatherApi
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
 
-    // Provide SearchRepository
-    single { SearchRepository() }
 
-    viewModel { HomeScreenVM(get()) }
-    viewModel { SearchScreenVM(get()) }
 
 }

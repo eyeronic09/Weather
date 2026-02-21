@@ -18,12 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import com.example.weather.HomeScreen.UI_Presentation.component.OverallStatices
 import com.example.weather.HomeScreen.UI_Presentation.component.TopAppBarHeader
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
-import com.example.weather.SearchScreen.SearchScreen
-import com.example.weather.SearchScreen.Search_Screen
+import com.example.weather.SearchScreen.Ui.Search_Screen
 import com.example.weather.domain.model.Weather
 import com.example.weather.domain.model.HourlyItem
 import org.koin.androidx.compose.koinViewModel
