@@ -22,7 +22,7 @@ sealed interface SearchEvent {
     object OnSearchClick : SearchEvent
 }
 data class SearchScreenUiState(
-    val autoSuggestion : List<AutoComplete>? = null,
+    val autoSuggestion : List<AutoComplete?> = emptyList(),
     val isLoading: Boolean = false,
     val searchQuery : String = "",
     val error: String? = null
@@ -33,6 +33,8 @@ class SearchScreenVM(
 
     private val _uiState = MutableStateFlow(SearchScreenUiState())
     val uiState: StateFlow<SearchScreenUiState> = _uiState.asStateFlow()
+
+
 
     init {
         observeQueryChanges()
@@ -56,9 +58,11 @@ class SearchScreenVM(
     private fun observeQueryChanges() {
         viewModelScope.launch {
             uiState
-                .map { it.searchQuery }
+                .map {
+                    it.searchQuery
+                }
                 .distinctUntilChanged()
-                .debounce(300)
+                .debounce(2000L)
                 .collectLatest { query ->
                     if (query.isNotBlank()) {
                         getSearch(query)
