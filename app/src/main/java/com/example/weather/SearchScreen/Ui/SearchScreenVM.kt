@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 sealed interface SearchEvent {
     data class OnQueryChange(val newQuery: String) : SearchEvent
     object OnSearchClick : SearchEvent
+    data class OnSuggestionClicked(val suggestion: AutoComplete) : SearchEvent
 }
 data class SearchScreenUiState(
     val autoSuggestion : List<AutoComplete?> = emptyList(),
@@ -46,21 +47,28 @@ class SearchScreenVM(
             is SearchEvent.OnQueryChange -> {
                 _uiState.update { it.copy(searchQuery = event.newQuery) }
             }
-            SearchEvent.OnSearchClick -> {
+            is SearchEvent.OnSearchClick -> {
                 val query = _uiState.value.searchQuery
                 if (query.isNotBlank()) {
                     getSearch(query)
                 }
             }
+            is SearchEvent.OnSuggestionClicked -> {
+                // Handle suggestion click - you can navigate or update state here
+                _uiState.update { 
+                    it.copy(
+                        searchQuery = "${event.suggestion.name}, ${event.suggestion.region}, ${event.suggestion.country}"
+                    )
+                }
+            }
+
         }
     }
 
     private fun observeQueryChanges() {
         viewModelScope.launch {
             uiState
-                .map {
-                    it.searchQuery
-                }
+                .map { it -> it.searchQuery }
                 .distinctUntilChanged()
                 .debounce(2000L)
                 .collectLatest { query ->
@@ -72,6 +80,7 @@ class SearchScreenVM(
                 }
         }
     }
+
 
     private fun getSearch(location: String) {
 

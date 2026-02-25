@@ -20,7 +20,7 @@ class HomeScreenVM(
 
     fun onEvent(onEvent: HomeScreenEvent){
         when(onEvent) {
-            is HomeScreenEvent.SearchWeather -> TODO()
+
             is HomeScreenEvent.UpdateSearchCityInput -> {
                 getDefaultWeather(onEvent.city)
             }

@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,10 +27,10 @@ import com.example.weather.domain.model.Weather
 import com.example.weather.domain.model.HourlyItem
 import org.koin.androidx.compose.koinViewModel
 
-class HomeScreen : Screen {
+class HomeScreen(val locationName : String): Screen {
     @Composable
     override fun Content() {
-        WeatherRoute()
+        WeatherRoute(locationName)
 
     }
 }
@@ -37,10 +38,14 @@ class HomeScreen : Screen {
 
 @Composable
 fun WeatherRoute(
+    locationName: String,
     viewModel: HomeScreenVM = koinViewModel(),
-
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(locationName) {
+        viewModel.onEvent(HomeScreenEvent.UpdateSearchCityInput(locationName))
+    }
 
     WeatherScreen(
         state = state,
