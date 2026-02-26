@@ -36,10 +36,11 @@ import com.example.weather.ui.theme.WeatherTheme
 @Composable
 fun OverallStatices(weather: Weather) {
 
-    val current = (0..50).associate {
-        "Random ${it}" to (0..100).random().toFloat()
-    }
-
+    val statices = mapOf(
+        "Humidity" to weather.humidity,
+        "temp c" to weather.temperatureC,
+        "Wind kph" to weather.windKph
+    )
 
     val showTheIcon = remember { mutableStateOf(true) }
 
@@ -88,7 +89,7 @@ fun OverallStatices(weather: Weather) {
             ) {
                 HourlyFourCastCard( weather.forcastday)
             }
-            items(current.toList()) { (title, value) ->
+            items(statices.toList()) { (title, value) ->
                 statCard(
                     title = title,
                     value = value.toString()

@@ -1,11 +1,12 @@
 package com.example.weather.core.Di
 
 import com.example.weather.HomeScreen.UI_Presentation.HomeScreenVM
-import com.example.weather.SearchScreen.Ui.SearchScreenVM
+import com.example.weather.HomeScreen.domain.repository.HomeLocationPrefRepository
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApi
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApiImpl
 import com.example.weather.HomeScreen.data.remote.Repository.WeatherRepositoryImpl
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
+import com.example.weather.SearchScreen.Ui.SearchScreenVM
 import com.example.weather.SearchScreen.Data.Remote.autoSearchApi.AutoCompleteApi
 import com.example.weather.SearchScreen.Data.Remote.autoSearchApi.AutoSearchImpl
 import com.example.weather.SearchScreen.Data.Remote.Repository.AutoSearchRepositoryImpl
@@ -21,6 +22,9 @@ val appModule = module {
     // Weather API dependencies
     single<WeatherApi> { WeatherApiImpl(get()) }
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
+
+    // Location preferences repository
+    single<HomeLocationPrefRepository> { HomeLocationPrefRepository(get()) }
 
     // Search API dependencies
     single<AutoCompleteApi> { AutoSearchImpl(get()) }
