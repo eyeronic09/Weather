@@ -1,4 +1,4 @@
-package com.example.weather.HomeScreen.data.Local
+package com.example.weather.SettingScreen.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore

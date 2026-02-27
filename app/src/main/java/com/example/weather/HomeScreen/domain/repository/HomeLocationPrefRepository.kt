@@ -2,8 +2,8 @@ package com.example.weather.HomeScreen.domain.repository
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import com.example.weather.HomeScreen.data.Local.DataStoreKeys
-import com.example.weather.HomeScreen.data.Local.locationPrefs
+import com.example.weather.SettingScreen.data.DataStoreKeys
+import com.example.weather.SettingScreen.data.locationPrefs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
