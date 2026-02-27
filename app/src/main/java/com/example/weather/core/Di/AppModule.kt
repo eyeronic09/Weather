@@ -1,7 +1,8 @@
 package com.example.weather.core.Di
 
 import com.example.weather.HomeScreen.UI_Presentation.HomeScreenVM
-import com.example.weather.HomeScreen.domain.repository.HomeLocationPrefRepository
+import com.example.weather.SettingScreen.UI_Layer.SettingVM
+import com.example.weather.SettingScreen.domain.repository.HomeLocationPrefRepository
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApi
 import com.example.weather.HomeScreen.data.remote.Api.WeatherApiImpl
 import com.example.weather.HomeScreen.data.remote.Repository.WeatherRepositoryImpl
@@ -32,5 +33,6 @@ val appModule = module {
 
     // ViewModels
     viewModel { HomeScreenVM(get()) }
+    viewModel { SettingVM(get(), get()) }
     viewModel { SearchScreenVM(get()) }
 }
