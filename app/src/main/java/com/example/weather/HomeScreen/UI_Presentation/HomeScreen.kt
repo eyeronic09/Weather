@@ -23,6 +23,7 @@ import com.example.weather.HomeScreen.UI_Presentation.component.OverallStatices
 import com.example.weather.HomeScreen.UI_Presentation.component.TopAppBarHeader
 import com.example.weather.HomeScreen.UI_Presentation.component.WeatherDetailsCard
 import com.example.weather.SearchScreen.Ui.Search_Screen
+import com.example.weather.SettingScreen.UI_Layer.Setting_Screen
 import com.example.weather.domain.model.Weather
 import com.example.weather.domain.model.HourlyItem
 import org.koin.androidx.compose.koinViewModel
@@ -67,7 +68,10 @@ fun WeatherScreen(
                     navigator?.push(
                         Search_Screen()
                     )
-                }
+                },
+                onSetting = {
+                    navigator?.push(Setting_Screen())
+                },
             )
         },
     ) { padding ->

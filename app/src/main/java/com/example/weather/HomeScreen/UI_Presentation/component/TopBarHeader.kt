@@ -15,21 +15,26 @@ import com.example.weather.domain.model.Weather
 @Composable
 fun TopAppBarHeader(
     weather: String,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
+    onSetting: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(weather)
         },
         actions = {
-            IconButton(
-                onSearch
-            )
-            {
+            IconButton(onClick = onSearch) {
                 Icon(
                     Icons.Default.Search,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    contentDescription = "search Location",
+                    contentDescription = "Search Location",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+            IconButton(onClick = onSetting) {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "Setting",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }

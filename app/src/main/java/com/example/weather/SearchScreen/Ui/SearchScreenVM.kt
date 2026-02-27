@@ -82,7 +82,7 @@ class SearchScreenVM(
     }
 
 
-    private fun getSearch(location: String) {
+     fun getSearch(location: String) {
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
