@@ -9,16 +9,15 @@ import kotlinx.coroutines.flow.map
 
 class HomeLocationPrefRepository(private val context: Context) {
 
-    suspend fun saveDeafaultLocation(location : String ){
+    suspend fun saveDefaultLocation(location : String){
         context.locationPrefs.edit { preferences ->
             preferences[DataStoreKeys.defaultLocation] = location
         }
     }
 
-     fun readDeafaultLocation(context: Context): Flow<String?> {
+     fun readDefaultLocation(): Flow<String?> {
         return context.locationPrefs.data.map { value ->
             value[DataStoreKeys.defaultLocation]
         }
-
     }
 }

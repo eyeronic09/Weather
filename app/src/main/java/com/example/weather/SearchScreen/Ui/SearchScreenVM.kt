@@ -6,6 +6,7 @@ import com.example.weather.SearchScreen.Data.Remote.Mapper.AutoCompleteResult
 import com.example.weather.SearchScreen.Domain.Model.AutoComplete
 import com.example.weather.SearchScreen.Domain.Repository.AutoSearchRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,6 +66,7 @@ class SearchScreenVM(
         }
     }
 
+    @OptIn(FlowPreview::class)
     private fun observeQueryChanges() {
         viewModelScope.launch {
             uiState
