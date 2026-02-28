@@ -45,7 +45,10 @@ fun WeatherRoute(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(locationName) {
-        viewModel.onEvent(HomeScreenEvent.UpdateSearchCityInput(locationName))
+        // Only make API call if location is valid (not empty and not "Not Set")
+        if (locationName.isNotBlank() && locationName != "Not Set") {
+            viewModel.onEvent(HomeScreenEvent.UpdateSearchCityInput(locationName))
+        }
     }
 
     WeatherScreen(

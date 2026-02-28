@@ -1,5 +1,6 @@
 package com.example.weather.SettingScreen.UI_Layer
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.SearchScreen.Data.Remote.Mapper.AutoCompleteResult
@@ -41,7 +42,7 @@ class SettingVM(
     val UiState: StateFlow<SettingScreenUiState> = _UiState.asStateFlow()
 
     init {
-        getSetLocation()
+
         observeQueryChanges()
     }
 
@@ -97,13 +98,16 @@ class SettingVM(
         }
     }
 
-    private fun getSetLocation() {
+    fun getSetLocation() {
         viewModelScope.launch {
-            repository.readDefaultLocation().collectLatest { location ->
+            repository.readDefaultLocation().collect { location ->
+
                 _UiState.update {
                     it.copy(HomeLocation = location ?: "Not Set")
                 }
             }
+
+
         }
     }
 }

@@ -32,7 +32,7 @@ val appModule = module {
     single<AutoSearchRepository> { AutoSearchRepositoryImpl(get()) }
 
     // ViewModels
-    viewModel { HomeScreenVM(get()) }
+    viewModel { HomeScreenVM(get(), get()) }
     viewModel { SettingVM(get(), get()) }
     viewModel { SearchScreenVM(get()) }
 }
