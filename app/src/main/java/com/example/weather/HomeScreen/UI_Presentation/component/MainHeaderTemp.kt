@@ -50,6 +50,7 @@ private fun MainHeaderTempPreview() {
         windKph = 23F,
         humidity = 23,
         forcastday = emptyList(),
+        temperatureF = 0f,
     )
     MainHeaderTemp(weather)
 }

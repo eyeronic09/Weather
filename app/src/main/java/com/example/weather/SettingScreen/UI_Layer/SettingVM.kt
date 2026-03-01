@@ -1,12 +1,11 @@
 package com.example.weather.SettingScreen.UI_Layer
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.SearchScreen.Data.Remote.Mapper.AutoCompleteResult
 import com.example.weather.SearchScreen.Domain.Model.AutoComplete
 import com.example.weather.SearchScreen.Domain.Repository.AutoSearchRepository
-import com.example.weather.SettingScreen.domain.repository.HomeLocationPrefRepository
+import com.example.weather.SettingScreen.domain.repository.SettingPrefRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +34,7 @@ sealed interface SettingLocationEvent {
 }
 
 class SettingVM(
-    private val repository: HomeLocationPrefRepository,
+    private val repository: SettingPrefRepository,
     private val autoSearchRepository: AutoSearchRepository
 ) : ViewModel() {
     private val _UiState = MutableStateFlow(SettingScreenUiState())
@@ -62,7 +61,7 @@ class SettingVM(
             UiState
                 .map { it.currentQuery }
                 .distinctUntilChanged()
-                .debounce(500L) // Reduced debounce for better UX
+                .debounce(1000L) // Reduced debounce for better UX
                 .collectLatest { query ->
                     if (query.isNotBlank()) {
                         getSearch(query)
@@ -101,7 +100,6 @@ class SettingVM(
     fun getSetLocation() {
         viewModelScope.launch {
             repository.readDefaultLocation().collect { location ->
-
                 _UiState.update {
                     it.copy(HomeLocation = location ?: "Not Set")
                 }

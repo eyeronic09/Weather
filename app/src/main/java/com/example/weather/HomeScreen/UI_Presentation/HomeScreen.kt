@@ -44,8 +44,7 @@ fun WeatherRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(locationName) {
-        // Only make API call if location is valid (not empty and not "Not Set")
+    LaunchedEffect(locationName  ) {
         if (locationName.isNotBlank() && locationName != "Not Set") {
             viewModel.onEvent(HomeScreenEvent.UpdateSearchCityInput(locationName))
         }
@@ -115,7 +114,11 @@ fun WeatherContent(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    WeatherDetailsCard(weather = state.currentWeather)
+                    WeatherDetailsCard(
+                        weather = state.currentWeather,
+                        isTempC = state.isTempC,
+                        onToggleTempUnit = { onAction(HomeScreenEvent.ToggleTemperatureUnit) }
+                    )
                     OverallStatices(weather = state.currentWeather)
 
                 }
@@ -128,53 +131,5 @@ fun WeatherContent(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun HomeScreenPreview() {
-    val mockWeather = Weather(
-        cityName = "San Francisco",
-        region = "California",
-        country = "United States",
-        temperatureC = 22,
-        conditionText = "Partly cloudy",
-        conditionIconUrl = "//cdn.weatherapi.com/weather/64x64/day/116.png",
-        windKph = 15.5,
-        humidity = 65,
-        forcastday = listOf(
-            HourlyItem(
-                time = "2024-01-15 12:00",
-                tempC = 22f,
-                icon = "//cdn.weatherapi.com/weather/64x64/day/116.png",
-                conditionText = "Partly cloudy"
-            ),
-            HourlyItem(
-                time = "2024-01-15 13:00",
-                tempC = 24f,
-                icon = "//cdn.weatherapi.com/weather/64x64/day/113.png",
-                conditionText = "Sunny"
-            ),
-            HourlyItem(
-                time = "2024-01-15 14:00",
-                tempC = 23f,
-                icon = "//cdn.weatherapi.com/weather/64x64/day/119.png",
-                conditionText = "Cloudy"
-            )
-        )
-    )
-    
-    val mockState = WeatherState(
-        isLoading = false,
-        currentWeather = mockWeather,
-        hourlyWeather = mockWeather.forcastday,
-        error = null,
-        searchWeatherCity = "San Francisco"
-    )
-    
-    WeatherScreen(
-        state = mockState,
-        onAction = {}
-    )
 }
 

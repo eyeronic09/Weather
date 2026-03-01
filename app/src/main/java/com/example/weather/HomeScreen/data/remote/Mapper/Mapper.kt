@@ -20,13 +20,16 @@ object Mapper {
             conditionIconUrl = dto.current?.condition?.icon ?: "",
             windKph = dto.current?.windKph ?: 0,
             humidity = dto.current?.humidity ?: 0,
-             forcastday = hourly?.hour?.map { HourlyItemToDomain(dto = it) } ?: emptyList(),
+            temperatureF = dto.current?.tempF ?: 0f,
+            forcastday = hourly?.hour?.map { HourlyItemToDomain(dto = it) } ?: emptyList(),
+
         )
     }
 
     fun HourlyItemToDomain(dto: HourlyWeatherDto): HourlyItem {
         return HourlyItem(
             time = dto.time,
+            tempF = dto.tempF.toFloat(),
             tempC = dto.tempC.toFloat(),
             conditionText = dto.condition.text,
             icon = dto.condition.icon,

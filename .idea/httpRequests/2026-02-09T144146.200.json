@@ -1,0 +1,21 @@
+{
+  "args": {
+    "show_env": "1"
+  },
+  "headers": {
+    "Accept": "application/json",
+    "Accept-Encoding": "br, deflate, gzip, x-gzip",
+    "Host": "examples.http-client.intellij.net",
+    "User-Agent": "IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3",
+    "X-Forwarded-For": "103.31.142.60",
+    "X-Forwarded-Host": "examples.http-client.intellij.net",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https",
+    "X-Forwarded-Scheme": "https",
+    "X-Real-Ip": "103.31.142.60",
+    "X-Request-Id": "60ab43654b4c5e514d9752895744867b",
+    "X-Scheme": "https"
+  },
+  "origin": "103.31.142.60",
+  "url": "https://examples.http-client.intellij.net/get?show_env=1"
+}

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddLocationAlt
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,6 +67,11 @@ fun SettingContent(
             .padding(16.dp),
     ) {
         Text(text = "Home Location: ${state.HomeLocation}")
+
+        RadioButton(
+            selected = ,
+            onClick = TODO()
+        )
 
         insertLocation(
             currentQuery = state.currentQuery,

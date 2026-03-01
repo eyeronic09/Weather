@@ -1,0 +1,21 @@
+{
+  "args": {
+    "value": "@ $!"
+  },
+  "data": "",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "br, deflate, gzip, x-gzip",
+    "Host": "examples.http-client.intellij.net",
+    "User-Agent": "IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3",
+    "X-Forwarded-Host": "examples.http-client.intellij.net",
+    "X-Forwarded-Scheme": "https",
+    "X-Scheme": "https"
+  },
+  "json": null,
+  "method": "GET",
+  "origin": "103.31.142.60",
+  "url": "https://examples.http-client.intellij.net/anything?value=%40+$!"
+}

@@ -1,0 +1,108 @@
+GET https://examples.http-client.intellij.net/get
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-02-09T144153.200.json
+
+###
+
+GET https://examples.http-client.intellij.net/get
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+###
+
+GET https://examples.http-client.intellij.net/get
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> my-response.json
+
+###
+
+GET https://examples.http-client.intellij.net/anything?id=570b2a6b-2040-4731-842e-35ff193f8181&ts=1770628310
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-02-09T144151.200.json
+
+###
+
+GET https://examples.http-client.intellij.net/cookies
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+Cookie: last_searched_location=IJburg; theme=darcula
+
+<> 2026-02-09T144150.200.json
+
+###
+
+# @no-auto-encoding
+GET https://examples.http-client.intellij.net/anything?value=@+$!
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-02-09T144149.200.json
+
+###
+
+# @no-cookie-jar
+GET https://examples.http-client.intellij.net/cookies
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-02-09T144148.200.json
+
+###
+
+# @no-redirect
+GET https://examples.http-client.intellij.net/status/301
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+###
+
+GET https://examples.http-client.intellij.net/get?show_env=1
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2026-02-09T144147.200.json
+
+###
+
+GET https://examples.http-client.intellij.net/get?show_env=1
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2026-02-09T144146.200.json
+
+###
+
+GET https://examples.http-client.intellij.net/get?generated-in=IntelliJ IDEA
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-02-09T144145.200.json
+
+###
+
+GET https://examples.http-client.intellij.net/ip
+Accept: application/json
+User-Agent: IntelliJ HTTP Client/Android Studio Otter 3 Feature Drop | 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+
+<> 2026-02-09T144144.200.json
+
+###
+
