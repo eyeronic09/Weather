@@ -53,7 +53,7 @@ class HomeScreenVM(
         viewModelScope.launch {
             settingPrefRepository.readDefaultTempUnit().collect { unit ->
                 unit?.let {
-                    if (it == "tempC") {
+                    if (it == "C") {
                         _Uistate.update {
                             it.copy(
                                 isTempC = true,
@@ -78,9 +78,6 @@ class HomeScreenVM(
                 _searchCityInput.value = onEvent.city.ifBlank { null }
             }
 
-            is HomeScreenEvent.ToggleTemperatureUnit -> {
-
-            }
         }
     }
 

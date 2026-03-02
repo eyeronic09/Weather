@@ -117,8 +117,7 @@ fun WeatherContent(
                     WeatherDetailsCard(
                         weather = state.currentWeather,
                         isTempC = state.isTempC,
-                        onToggleTempUnit = { onAction(HomeScreenEvent.ToggleTemperatureUnit) }
-                    )
+                        )
                     OverallStatices(weather = state.currentWeather)
 
                 }

@@ -29,7 +29,7 @@ class SettingPrefRepository(private val context: Context) {
     }
 
     fun readDefaultTempUnit(): Flow<String?> {
-        return context.locationPrefs.data.map { value ->
+        return context.tempUnit.data.map { value ->
             value[DataStoreKeys.tempUnit]
         }
     }
