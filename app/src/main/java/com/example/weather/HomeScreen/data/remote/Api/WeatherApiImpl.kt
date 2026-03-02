@@ -14,9 +14,6 @@ class WeatherApiImpl(private val client: HttpClient) : WeatherApi {
     private val base_url = "https://api.weatherapi.com/v1"
 
     override suspend fun getWeatherApi(city: String): CurrentWeatherDto{
-        Log.d("WeatherApi", "API Key: ${if (api.isNotEmpty()) "Present" else "MISSING"}")
-        Log.d("WeatherApi", "Making request for city: $city")
-        
         return try {
             val response = client.get(urlString = "$base_url/forecast.json") {
                 parameter("key", api)

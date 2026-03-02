@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+import java.util.Properties
+
 android {
     namespace = "com.example.weather"
     compileSdk = 36
@@ -18,8 +20,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Reading the API key from gradle.properties
-        val apiKey = project.findProperty("Weather_API_KEY") ?: ""
+        // Reading the API key from local.properties (gitignored), env var, or gradle.properties fallback
+        val localProps = Properties().apply {
+            val file = rootProject.file("local.properties")
+            if (file.exists()) {
+                file.inputStream().use { load(it) }
+            }
+        }
+        val apiKey = (localProps.getProperty("Weather_API_KEY")
+            ?: System.getenv("WEATHER_API_KEY")
+            ?: project.findProperty("Weather_API_KEY"))?.toString().orEmpty()
         buildConfigField("String", "WEATHER_API_KEY", "\"$apiKey\"")
     }
 

@@ -38,7 +38,6 @@ object NetworkClient {
         defaultRequest {
             url {
                 parameters.append("key" , apiKey)
-                Log.d("NetworkClient", "Adding API key to default request: $apiKey")
 
             }
         }
