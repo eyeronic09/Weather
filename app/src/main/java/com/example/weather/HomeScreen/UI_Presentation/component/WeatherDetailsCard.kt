@@ -42,17 +42,7 @@ fun WeatherDetailsCard(
                         "${weather.temperatureF} °F"
                     }
                 )
-                
-                IconButton(
-                    onClick = onToggleTempUnit,
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    Icon(
-                        Icons.Default.SwapVert,
-                        contentDescription = "Toggle temperature unit",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+
             }
 
             Column(modifier = Modifier.padding()) {

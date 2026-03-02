@@ -1,5 +1,6 @@
 package com.example.weather.SettingScreen.UI_Layer
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.SearchScreen.Data.Remote.Mapper.AutoCompleteResult
@@ -17,42 +18,49 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class SettingScreenUiState(
+    val options: List<String> = listOf("F", "C",),
+    val selectedTempUnit : String = "F",
     val HomeLocation: String = "",
     val ShowPOP: Boolean = false,
     // this is currentQuery for insertLocations Composable
     val currentQuery: String = "",
     val onQueryChange: String = "",
     val autoComplete: List<AutoComplete> = emptyList(),
-    val error: String? = ""
+    val error: String = ""
 )
 
 sealed interface SettingLocationEvent {
-    object showThePoPUp : SettingLocationEvent
-    object hideThatPopUp : SettingLocationEvent
+    object ShowThatAddPopUp : SettingLocationEvent
+    object HideThatPopUp : SettingLocationEvent
     data class SetLocation(val onLocationChange: String) : SettingLocationEvent
     data class QueryChange(val onQueryChange: String) : SettingLocationEvent
+    data class SetTempUnit(val TempUnit: String) : SettingLocationEvent
 }
 
 class SettingVM(
     private val repository: SettingPrefRepository,
-    private val autoSearchRepository: AutoSearchRepository
+    private val autoSearchRepository: AutoSearchRepository,
+    private val settingPrefRepository: SettingPrefRepository
 ) : ViewModel() {
     private val _UiState = MutableStateFlow(SettingScreenUiState())
     val UiState: StateFlow<SettingScreenUiState> = _UiState.asStateFlow()
 
     init {
-
         observeQueryChanges()
+        getSelectedTempUnit()
+
     }
 
     fun onEvent(event: SettingLocationEvent) {
         when (event) {
             is SettingLocationEvent.SetLocation -> setSetLocation(event.onLocationChange)
-            is SettingLocationEvent.showThePoPUp -> _UiState.update { it.copy(ShowPOP = true) }
-            is SettingLocationEvent.hideThatPopUp -> _UiState.update { it.copy(ShowPOP = false) }
+            is SettingLocationEvent.ShowThatAddPopUp -> _UiState.update { it.copy(ShowPOP = true) }
+            is SettingLocationEvent.HideThatPopUp -> _UiState.update { it.copy(ShowPOP = false) }
             is SettingLocationEvent.QueryChange -> _UiState.update {
                 it.copy(currentQuery = event.onQueryChange)
             }
+
+            is SettingLocationEvent.SetTempUnit -> setSelectedTempUnit(event.TempUnit)
         }
     }
 
@@ -80,6 +88,7 @@ class SettingVM(
                         it.copy(error = result.errorMessage.toString())
                     }
                 }
+
                 is AutoCompleteResult.Success -> {
                     _UiState.update {
                         it.copy(autoComplete = result.data)
@@ -105,7 +114,25 @@ class SettingVM(
                 }
             }
 
-
         }
     }
+
+     fun getSelectedTempUnit() {
+         viewModelScope.launch {
+             settingPrefRepository.readDefaultTempUnit().collect { unit ->
+                 _UiState.update {
+                     it.copy(selectedTempUnit = if (unit == "C") "C" else "F")
+                 }
+             }
+         }
+     }
+    fun setSelectedTempUnit(string: String) {
+        Log.d("SelectedTemp", string)
+        viewModelScope.launch {
+            settingPrefRepository.saveDefaultTempUnit(string)
+            _UiState.update { it.copy(selectedTempUnit = string) }
+        }
+    }
+
+
 }

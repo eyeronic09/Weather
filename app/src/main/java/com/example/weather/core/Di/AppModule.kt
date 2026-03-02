@@ -33,6 +33,6 @@ val appModule = module {
 
     // ViewModels
     viewModel { HomeScreenVM(get(), get()) }
-    viewModel { SettingVM(get(), get()) }
+    viewModel { SettingVM(get(), get(), get()) }
     viewModel { SearchScreenVM(get()) }
 }

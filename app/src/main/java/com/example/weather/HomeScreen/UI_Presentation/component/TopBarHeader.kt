@@ -2,6 +2,7 @@ package com.example.weather.HomeScreen.UI_Presentation.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,14 +26,14 @@ fun TopAppBarHeader(
         actions = {
             IconButton(onClick = onSearch) {
                 Icon(
-                    Icons.Default.Search,
+                    imageVector = Icons.Default.Search,
                     contentDescription = "Search Location",
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
             IconButton(onClick = onSetting) {
                 Icon(
-                    Icons.Default.Search,
+                    imageVector = Icons.Default.Settings,
                     contentDescription = "Setting",
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
