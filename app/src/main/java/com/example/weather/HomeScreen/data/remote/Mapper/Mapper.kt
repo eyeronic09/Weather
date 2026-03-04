@@ -1,39 +1,36 @@
 package com.example.weather.HomeScreen.data.remote.Mapper
 
-import android.util.Log
 import com.example.weather.HomeScreen.data.remote.Dtos.CurrentWeatherDto
-import com.example.weather.HomeScreen.data.remote.Dtos.HourlyWeatherDto
-import com.example.weather.domain.model.HourlyItem
+import com.example.weather.domain.model.ForecastDay
+import com.example.weather.domain.model.HourlyForecast
 import com.example.weather.domain.model.Weather
-
 
 object Mapper {
     fun CurrentWeatherDtoToDomain(dto: CurrentWeatherDto): Weather {
-        val hourly = dto.forecast?.forecastday?.firstOrNull()
-        Log.d("hourly" , hourly.toString())
         return Weather(
             cityName = dto.location?.name ?: "",
             region = dto.location?.region ?: "",
             country = dto.location?.country ?: "",
-            temperatureC = dto.current?.tempC ?: 0F,
+            temperatureC = dto.current?.tempC ?: 0.0,
+            temperatureF = dto.current?.tempF ?: 0.0,
             conditionText = dto.current?.condition?.text ?: "",
             conditionIconUrl = dto.current?.condition?.icon ?: "",
-            windKph = dto.current?.windKph ?: 0,
+            windKph = dto.current?.windKph ?: 0.0,
             humidity = dto.current?.humidity ?: 0,
-            temperatureF = dto.current?.tempF ?: 0f,
-            forcastday = hourly?.hour?.map { HourlyItemToDomain(dto = it) } ?: emptyList(),
-
+            forecastDays = dto.forecast?.forecastday?.map { forecastDayDto ->
+                ForecastDay(
+                    date = forecastDayDto.date,
+                    hourlyForecasts = forecastDayDto.hour.map { hourlyDto ->
+                        HourlyForecast(
+                            time = hourlyDto.time,
+                            tempC = hourlyDto.tempC.toFloat(),
+                            tempF = hourlyDto.tempF.toFloat(),
+                            icon = hourlyDto.condition.icon,
+                            conditionText = hourlyDto.condition.text
+                        )
+                    }
+                )
+            } ?: emptyList()
         )
     }
-
-    fun HourlyItemToDomain(dto: HourlyWeatherDto): HourlyItem {
-        return HourlyItem(
-            time = dto.time,
-            tempF = dto.tempF.toFloat(),
-            tempC = dto.tempC.toFloat(),
-            conditionText = dto.condition.text,
-            icon = dto.condition.icon,
-        )
-    }
-
 }

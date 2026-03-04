@@ -17,6 +17,7 @@ class WeatherApiImpl(private val client: HttpClient) : WeatherApi {
         return try {
             val response = client.get(urlString = "$base_url/forecast.json") {
                 parameter("key", api)
+                parameter("days", 3)
                 parameter("q", city)
                 parameter("aqi", "no")
             }

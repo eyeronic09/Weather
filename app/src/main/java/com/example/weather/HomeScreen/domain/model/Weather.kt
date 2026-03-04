@@ -10,14 +10,18 @@ data class Weather(
     val conditionIconUrl: String,
     val windKph: Any,
     val humidity: Any,
-    val forcastday : List<HourlyItem>
-
+    val forecastDays: List<ForecastDay>
 )
 
-data class HourlyItem(
+data class ForecastDay(
+    val date: String,
+    val hourlyForecasts: List<HourlyForecast>
+)
+
+data class HourlyForecast(
     val time: String = "",
     val tempC: Float = 0f,
-    val tempF : Float = 0f,
-    val icon : String = "",
+    val tempF: Float = 0f,
+    val icon: String = "",
     val conditionText: String = ""
 )

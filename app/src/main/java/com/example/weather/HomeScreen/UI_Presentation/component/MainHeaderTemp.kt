@@ -36,21 +36,3 @@ fun MainHeaderTemp(weather: Weather) {
 
 
 
-
-@Composable
-@Preview(showBackground = true)
-private fun MainHeaderTempPreview() {
-    val weather = Weather(
-        cityName = "Berlin",
-        region = "i dont know",
-        country = "Germany",
-        temperatureC = 32.toFloat(),
-        conditionText = "Light rain",
-        conditionIconUrl = "er",
-        windKph = 23F,
-        humidity = 23,
-        forcastday = emptyList(),
-        temperatureF = 0f,
-    )
-    MainHeaderTemp(weather)
-}

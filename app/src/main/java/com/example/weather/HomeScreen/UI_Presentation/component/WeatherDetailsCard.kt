@@ -24,7 +24,6 @@ import com.example.weather.ui.theme.WeatherTheme
 fun WeatherDetailsCard(
     weather: Weather, 
     isTempC: Boolean = true,
-    onToggleTempUnit: () -> Unit = {}
 ) {
     Card() {
         Row(modifier = Modifier
@@ -67,24 +66,3 @@ private fun Windspeed(windSpeed: String) {
         )
     }
 }
-
-@Preview(showBackground = true , uiMode = UI_MODE_NIGHT_YES)
-@Composable
-private fun WeatherDetailsCardPreview() {
-    val sampleWeather = Weather(
-        cityName = "New York",
-        region = "New York",
-        country = "United States",
-        temperatureC = 25,
-        conditionText = "Sunny",
-        conditionIconUrl = "",
-        windKph = 15.0f,
-        humidity = 60,
-        forcastday = emptyList(),
-        temperatureF = 0f
-    )
-    WeatherTheme {
-        WeatherDetailsCard(weather = sampleWeather)
-    }
-}
-

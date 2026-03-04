@@ -5,18 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
-import com.example.weather.SettingScreen.data.DataStoreKeys
 import com.example.weather.SettingScreen.domain.repository.SettingPrefRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.startWith
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -95,7 +91,7 @@ class HomeScreenVM(
                     is Result.Success -> value.copy(
                         isLoading = false,
                         currentWeather = result.data,
-                        hourlyWeather = result.data.forcastday,
+                        hourlyWeather = result.data.forecastDays.flatMap { it.hourlyForecasts },
                         error = null
                     )
                     is Result.Error -> value.copy(
@@ -109,5 +105,3 @@ class HomeScreenVM(
         }
     }
 }
-
-

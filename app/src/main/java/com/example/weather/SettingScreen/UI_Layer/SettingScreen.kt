@@ -2,9 +2,11 @@ package com.example.weather.SettingScreen.UI_Layer
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddHome
 import androidx.compose.material.icons.filled.AddLocationAlt
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -13,11 +15,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
+import com.example.weather.SettingScreen.compontent.MaterialSymbolsLocation_home
 import com.example.weather.SettingScreen.compontent.TemperatureSelector
 import com.example.weather.SettingScreen.compontent.insertLocation
 import org.koin.androidx.compose.koinViewModel
@@ -68,14 +73,23 @@ fun SettingContent(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Home Location",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
+        Row {
+            Text(
+                text = "Home Location" ,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+            Icon(
+                modifier = Modifier.align(CenterVertically),
+                imageVector = MaterialSymbolsLocation_home,
+                contentDescription = "Home Location Icon"
+            )
+
+        }
+
 
         Text(
-            text = state.HomeLocation,
+            text = state.HomeLocation ,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )

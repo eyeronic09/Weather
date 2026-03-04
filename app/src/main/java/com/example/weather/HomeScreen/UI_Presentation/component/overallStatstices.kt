@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,16 +20,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.weather.domain.model.HourlyItem
 import com.example.weather.domain.model.Weather
-import com.example.weather.ui.theme.WeatherTheme
 
 @Composable
 fun OverallStatices(weather: Weather) {
@@ -70,7 +64,7 @@ fun OverallStatices(weather: Weather) {
                 gridState.firstVisibleItemScrollOffset
             }.collect { (index, offset) ->
                 val isScrolled = previousIndex > index || index != 0
-                Log.d("scroll", "Index: $index Offset: $offset Scrolled: $isScrolled")
+
                 previousIndex = index
                 showTheIcon.value  = !isScrolled
                 Log.d("showTheIconBoolean" , showTheIcon.toString())
@@ -87,7 +81,7 @@ fun OverallStatices(weather: Weather) {
             item (
                 span = { GridItemSpan(currentLineSpan = 2) }
             ) {
-                HourlyFourCastCard( weather.forcastday)
+                HourlyFourCastCard(weather.forecastDays.flatMap { it.hourlyForecasts })
             }
             items(statices.toList()) { (title, value) ->
                 statCard(
