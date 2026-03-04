@@ -48,6 +48,7 @@ class SettingVM(
     init {
         observeQueryChanges()
         getSelectedTempUnit()
+        getSetLocation()
 
     }
 
@@ -87,6 +88,7 @@ class SettingVM(
                     _UiState.update {
                         it.copy(error = result.errorMessage.toString())
                     }
+                    Log.d("searchError" , result.errorMessage.toString())
                 }
 
                 is AutoCompleteResult.Success -> {
@@ -101,7 +103,6 @@ class SettingVM(
     private fun setSetLocation(location: String) {
         viewModelScope.launch {
             repository.saveDefaultLocation(location)
-            // Optionally hide popup after saving
             _UiState.update { it.copy(ShowPOP = false) }
         }
     }

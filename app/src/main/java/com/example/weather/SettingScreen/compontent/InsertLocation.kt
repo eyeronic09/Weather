@@ -30,7 +30,7 @@ fun insertLocation(
         AlertDialog(
             onDismissRequest = onDismiss,
             title = {
-                Text(text = "Search Location", style = MaterialTheme.typography.headlineSmall)
+                Text(text = "Save Location", style = MaterialTheme.typography.headlineSmall)
             },
             text = {
                 Column(
@@ -50,7 +50,7 @@ fun insertLocation(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 300.dp)
-                            .padding(top = 8.dp)
+                            .padding()
                     ) {
                         items(autoComplete) { item ->
                             CustomCard(

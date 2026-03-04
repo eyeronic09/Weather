@@ -9,6 +9,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -34,8 +35,7 @@ fun CustomCard(
     OutlinedCard(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .fillMaxWidth().padding(top = 8.dp , bottom = 8.dp),
         colors = outlinedCardColors(
             containerColor = MaterialTheme.colorScheme.onSecondary,
 
@@ -45,7 +45,8 @@ fun CustomCard(
             color = MaterialTheme.colorScheme.primary
         ),
     ) {
-        Text(text = region, style = MaterialTheme.typography.titleMedium)
-        Text(text = "$country , $city"  , style = MaterialTheme.typography.titleSmall)
+        CustomCardText(text = region, style = MaterialTheme.typography.titleMedium , modifier = Modifier)
+        CustomCardText(text = "$country , $city"  , style = MaterialTheme.typography.titleSmall , modifier = Modifier)
     }
 }
+
