@@ -3,19 +3,27 @@ package com.example.weather.HomeScreen.UI_Presentation.component
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,23 +37,48 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast>) {
     val listState = rememberLazyListState()
-
-
-
+    val status = remember {
+        mutableStateOf("Today")
+    }
     LaunchedEffect(listState) {
         snapshotFlow {
             listState.firstVisibleItemIndex
         }.collect { index->
-            Log.d("currentlyIndex" , "The item key on the left is: $index")
+
+
+            when (index) {
+                in  0..23  -> {
+                    status.value = "Today"
+                }
+                in 24..47 -> {
+                    status.value = "Tomorrow"
+                }
+                in 48..72 -> {
+                    status.value = "Day After tomorrow"
+                }
+            }
+
+
         }
     }
 
+
     OutlinedCard(modifier = Modifier) {
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = "Hourly Forecast",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Row (modifier = Modifier.fillMaxWidth().padding(16.dp) ,
+            horizontalArrangement = Arrangement.SpaceBetween ,
+            verticalAlignment = Alignment.CenterVertically)  {
+            Text(
+                modifier = Modifier,
+                text = "Hourly Forecast",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Button(onClick = {null}) {
+                Text(status.value)
+            }
+        }
+
+
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly, state = listState) {
             items(hourlyForecasts ,) { item ->
                 hourlyVerticalCard(hourly = item)
