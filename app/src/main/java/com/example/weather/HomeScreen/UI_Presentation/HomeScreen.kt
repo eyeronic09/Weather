@@ -115,7 +115,7 @@ fun WeatherContent(
                         weather = state.currentWeather,
                         isTempC = state.isTempC,
                         )
-                    OverallStatices(weather = state.currentWeather)
+                    OverallStatices(weather = state.currentWeather , state.isTempC)
 
                 }
             }

@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
-fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast>) {
+fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast> , isTemp : Boolean ) {
     val listState = rememberLazyListState()
     val status = remember {
         mutableStateOf("Today")
@@ -44,7 +44,6 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast>) {
         snapshotFlow {
             listState.firstVisibleItemIndex
         }.collect { index->
-
 
             when (index) {
                 in  0..23  -> {
@@ -81,7 +80,8 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast>) {
 
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly, state = listState) {
             items(hourlyForecasts ,) { item ->
-                hourlyVerticalCard(hourly = item)
+                hourlyVerticalCard(hourly = item , isTemp
+                )
             }
         }
 
@@ -89,8 +89,7 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast>) {
 }
 
 @Composable
-private fun hourlyVerticalCard(hourly: HourlyForecast) {
-
+private fun hourlyVerticalCard(hourly: HourlyForecast , isTemp: Boolean) {
     Column(modifier = Modifier
         .padding(all = 16.dp)
         .height(220.dp),
@@ -105,7 +104,11 @@ private fun hourlyVerticalCard(hourly: HourlyForecast) {
             iconUrl = hourly.icon,
             contentDescription = hourly.icon,
         )
-        Text(text = hourly.tempC.toString())
+        if (isTemp) {
+            Text(text = hourly.tempC.toString())
+        } else {
+            Text(text = hourly.tempF.toString() )
+        }
     }
 }
 
@@ -119,6 +122,6 @@ private fun hourlyVerticalCardPreview() {
         conditionText = "Sunny"
     )
     WeatherTheme {
-        hourlyVerticalCard(hourly = sampleHourlyForecast)
+        hourlyVerticalCard(hourly = sampleHourlyForecast , isTemp = true)
     }
 }

@@ -28,11 +28,10 @@ import androidx.compose.ui.unit.dp
 import com.example.weather.domain.model.Weather
 
 @Composable
-fun OverallStatices(weather: Weather) {
+fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
 
     val statices = mapOf(
         "Humidity" to weather.humidity,
-        "temp c" to weather.temperatureC,
         "Wind kph" to weather.windKph
     )
 
@@ -81,7 +80,10 @@ fun OverallStatices(weather: Weather) {
             item (
                 span = { GridItemSpan(currentLineSpan = 2) }
             ) {
-                HourlyFourCastCard(weather.forecastDays.flatMap { it.hourlyForecasts })
+                HourlyFourCastCard(
+                    hourlyForecasts = weather.forecastDays.flatMap { it.hourlyForecasts },
+                    isTemp = isTemp,
+                )
             }
             items(statices.toList()) { (title, value) ->
                 statCard(
