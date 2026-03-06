@@ -36,9 +36,9 @@ fun WeatherDetailsCard(
                 Text(
                     style = MaterialTheme.typography.displayMedium,
                     text = if (isTempC) {
-                        "${weather.temperatureC} °C"
+                        "${String.format("%.1f", weather.temperatureC)} °C"
                     } else {
-                        "${weather.temperatureF} °F"
+                        "${String.format("%.1f", weather.temperatureF)} °F"
                     }
                 )
 

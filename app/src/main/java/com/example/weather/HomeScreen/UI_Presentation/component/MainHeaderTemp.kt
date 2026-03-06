@@ -23,7 +23,7 @@ fun MainHeaderTemp(weather: Weather) {
     ) {
         Text(
             modifier = Modifier,
-            text = weather.temperatureC.toString() + " C",
+            text = String.format("%.1f", weather.temperatureC) + " °C",
             style = MaterialTheme.typography.displayMedium
         )
         Text(

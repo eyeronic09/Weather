@@ -79,37 +79,37 @@ class HomeScreenVM(
 
             is HomeScreenEvent.onRefresh -> {
                 viewModelScope.launch {
-                        val currentState = _Uistate.value
-                        if (currentState.searchWeatherCity.trim().isBlank()) return@launch
+                    val currentState = _Uistate.value
+                    if (currentState.searchWeatherCity.trim().isBlank()) return@launch
 
-                        when (val result : Result<Weather, *> =
-                            repository.getCurrentWeather(currentState.searchWeatherCity)) {
-                            is Result.Error<*> -> {
+                    when (val result: Result<Weather, *> =
+                        repository.getCurrentWeather(currentState.searchWeatherCity)) {
+                        is Result.Error<*> -> {
+                            _Uistate.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = result.errorMessage.toString()
+                                )
+                            }
+                        }
+
+                        is Result.Success -> {
+                            if (currentState.currentWeather != result.data) {
                                 _Uistate.update {
                                     it.copy(
                                         isLoading = false,
-                                        error = result.errorMessage.toString()
+                                        currentWeather = result.data,
+                                        hourlyWeather = result.data.forecastDays.flatMap { it.hourlyForecasts },
+                                        error = null
                                     )
                                 }
+                            } else {
+                                // Data unchanged, just stop loading
+                                _Uistate.update { it.copy(isLoading = false) }
                             }
-
-                            is Result.Success-> {
-                                if (currentState.currentWeather != result.data) {
-                                    _Uistate.update {
-                                        it.copy(
-                                            isLoading = false,
-                                            currentWeather = result.data,
-                                            hourlyWeather = result.data.forecastDays.flatMap { it.hourlyForecasts },
-                                            error = null
-                                        )
-                                    }
-                                } else {
-                                    // Data unchanged, just stop loading
-                                    _Uistate.update { it.copy(isLoading = false) }
-                                }
-                            }
-
                         }
+
+                    }
                 }
             }
         }
