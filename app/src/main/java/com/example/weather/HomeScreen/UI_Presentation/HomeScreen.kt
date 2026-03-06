@@ -72,6 +72,7 @@ fun WeatherScreen(
                     navigator?.push(Setting_Screen())
                 },
                 onRefresh = {
+
                     onAction(HomeScreenEvent.onRefresh)
                 },
             )

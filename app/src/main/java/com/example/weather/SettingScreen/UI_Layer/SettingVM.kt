@@ -18,122 +18,111 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class SettingScreenUiState(
-    val options: List<String> = listOf("F", "C",),
-    val selectedTempUnit : String = "F",
-    val HomeLocation: String = "",
-    val ShowPOP: Boolean = false,
-    // this is currentQuery for insertLocations Composable
+    val options: List<String> = listOf("Celsius (°C)", "Fahrenheit (°F)"),
+    val selectedTempUnit: String = "Celsius (°C)",
+    val homeLocation: String = "",
+    val showPopUp: Boolean = false,
     val currentQuery: String = "",
-    val onQueryChange: String = "",
     val autoComplete: List<AutoComplete> = emptyList(),
-    val error: String = ""
+    val isSearching: Boolean = false,
+    val error: String? = null
 )
 
-sealed interface SettingLocationEvent {
-    object ShowThatAddPopUp : SettingLocationEvent
-    object HideThatPopUp : SettingLocationEvent
-    data class SetLocation(val onLocationChange: String) : SettingLocationEvent
-    data class QueryChange(val onQueryChange: String) : SettingLocationEvent
-    data class SetTempUnit(val TempUnit: String) : SettingLocationEvent
+sealed interface SettingEvent {
+    object ShowAddLocationPopUp : SettingEvent
+    object DismissPopUp : SettingEvent
+    data class SelectLocation(val city: String) : SettingEvent
+    data class QueryChange(val query: String) : SettingEvent
+    data class SetTempUnit(val unit: String) : SettingEvent
 }
 
 class SettingVM(
-    private val repository: SettingPrefRepository,
-    private val autoSearchRepository: AutoSearchRepository,
-    private val settingPrefRepository: SettingPrefRepository
+    private val settingPrefRepository: SettingPrefRepository,
+    private val autoSearchRepository: AutoSearchRepository
 ) : ViewModel() {
-    private val _UiState = MutableStateFlow(SettingScreenUiState())
-    val UiState: StateFlow<SettingScreenUiState> = _UiState.asStateFlow()
+    private val _uiState = MutableStateFlow(SettingScreenUiState())
+    val uiState: StateFlow<SettingScreenUiState> = _uiState.asStateFlow()
 
     init {
         observeQueryChanges()
-        getSelectedTempUnit()
-        getSetLocation()
-
+        loadSettings()
     }
 
-    fun onEvent(event: SettingLocationEvent) {
-        when (event) {
-            is SettingLocationEvent.SetLocation -> setSetLocation(event.onLocationChange)
-            is SettingLocationEvent.ShowThatAddPopUp -> _UiState.update { it.copy(ShowPOP = true) }
-            is SettingLocationEvent.HideThatPopUp -> _UiState.update { it.copy(ShowPOP = false) }
-            is SettingLocationEvent.QueryChange -> _UiState.update {
-                it.copy(currentQuery = event.onQueryChange)
+    private fun loadSettings() {
+        viewModelScope.launch {
+            launch {
+                settingPrefRepository.readDefaultLocation().collect { location ->
+                    _uiState.update { it.copy(homeLocation = location ?: "Not Set") }
+                }
             }
+            launch {
+                settingPrefRepository.readDefaultTempUnit().collect { unit ->
+                    val displayUnit = if (unit == "F") "Fahrenheit (°F)" else "Celsius (°C)"
+                    _uiState.update { it.copy(selectedTempUnit = displayUnit) }
+                }
+            }
+        }
+    }
 
-            is SettingLocationEvent.SetTempUnit -> setSelectedTempUnit(event.TempUnit)
+    fun onEvent(event: SettingEvent) {
+        when (event) {
+            is SettingEvent.SelectLocation -> {
+                saveLocation(event.city)
+            }
+            SettingEvent.ShowAddLocationPopUp -> {
+                _uiState.update { it.copy(showPopUp = true, currentQuery = "", autoComplete = emptyList()) }
+            }
+            SettingEvent.DismissPopUp -> {
+                _uiState.update { it.copy(showPopUp = false) }
+            }
+            is SettingEvent.QueryChange -> {
+                _uiState.update { it.copy(currentQuery = event.query) }
+            }
+            is SettingEvent.SetTempUnit -> {
+                saveTempUnit(event.unit)
+            }
         }
     }
 
     private fun observeQueryChanges() {
         viewModelScope.launch {
-            UiState
+            _uiState
                 .map { it.currentQuery }
                 .distinctUntilChanged()
-                .debounce(1000L) // Reduced debounce for better UX
+                .debounce(500L)
                 .collectLatest { query ->
-                    if (query.isNotBlank()) {
-                        getSearch(query)
+                    if (query.length >= 2) {
+                        searchLocation(query)
                     } else {
-                        _UiState.update { it.copy(autoComplete = emptyList()) }
+                        _uiState.update { it.copy(autoComplete = emptyList(), isSearching = false) }
                     }
                 }
         }
     }
 
-    fun getSearch(location: String) {
-        viewModelScope.launch {
-            when (val result = autoSearchRepository.getSearchedAutoComplete(location)) {
-                is AutoCompleteResult.Error -> {
-                    _UiState.update {
-                        it.copy(error = result.errorMessage.toString())
-                    }
-                    Log.d("searchError" , result.errorMessage.toString())
-                }
-
-                is AutoCompleteResult.Success -> {
-                    _UiState.update {
-                        it.copy(autoComplete = result.data)
-                    }
-                }
+    private suspend fun searchLocation(query: String) {
+        _uiState.update { it.copy(isSearching = true, error = null) }
+        when (val result = autoSearchRepository.getSearchedAutoComplete(query)) {
+            is AutoCompleteResult.Success -> {
+                _uiState.update { it.copy(autoComplete = result.data, isSearching = false) }
+            }
+            is AutoCompleteResult.Error -> {
+                _uiState.update { it.copy(error = result.errorMessage.toString(), isSearching = false) }
             }
         }
     }
 
-    private fun setSetLocation(location: String) {
+    private fun saveLocation(location: String) {
         viewModelScope.launch {
-            repository.saveDefaultLocation(location)
-            _UiState.update { it.copy(ShowPOP = false) }
+            settingPrefRepository.saveDefaultLocation(location)
+            _uiState.update { it.copy(showPopUp = false) }
         }
     }
 
-    fun getSetLocation() {
+    private fun saveTempUnit(displayUnit: String) {
+        val unitValue = if (displayUnit.contains("Fahrenheit")) "F" else "C"
         viewModelScope.launch {
-            repository.readDefaultLocation().collect { location ->
-                _UiState.update {
-                    it.copy(HomeLocation = location ?: "Not Set")
-                }
-            }
-
+            settingPrefRepository.saveDefaultTempUnit(unitValue)
         }
     }
-
-     fun getSelectedTempUnit() {
-         viewModelScope.launch {
-             settingPrefRepository.readDefaultTempUnit().collect { unit ->
-                 _UiState.update {
-                     it.copy(selectedTempUnit = if (unit == "C") "C" else "F")
-                 }
-             }
-         }
-     }
-    fun setSelectedTempUnit(string: String) {
-        Log.d("SelectedTemp", string)
-        viewModelScope.launch {
-            settingPrefRepository.saveDefaultTempUnit(string)
-            _UiState.update { it.copy(selectedTempUnit = string) }
-        }
-    }
-
-
 }
