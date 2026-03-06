@@ -71,6 +71,9 @@ fun WeatherScreen(
                 onSetting = {
                     navigator?.push(Setting_Screen())
                 },
+                onRefresh = {
+                    onAction(HomeScreenEvent.onRefresh)
+                },
             )
         },
     ) { padding ->

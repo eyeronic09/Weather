@@ -1,6 +1,7 @@
 package com.example.weather.HomeScreen.UI_Presentation.component
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +18,8 @@ import com.example.weather.domain.model.Weather
 fun TopAppBarHeader(
     weather: String,
     onSearch: () -> Unit,
-    onSetting: () -> Unit
+    onSetting: () -> Unit,
+    onRefresh : () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -36,6 +38,12 @@ fun TopAppBarHeader(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Setting",
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+            IconButton(onClick = onRefresh) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "refresh",
                 )
             }
         }

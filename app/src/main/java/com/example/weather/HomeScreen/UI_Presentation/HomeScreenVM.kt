@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
 import com.example.weather.SettingScreen.domain.repository.SettingPrefRepository
+import com.example.weather.domain.model.Weather
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenVM(
@@ -74,9 +77,44 @@ class HomeScreenVM(
                 _searchCityInput.value = onEvent.city.ifBlank { null }
             }
 
-        }
-    }
+            is HomeScreenEvent.onRefresh -> {
+                viewModelScope.launch {
+                        val currentState = _Uistate.value
+                        if (currentState.searchWeatherCity.trim().isBlank()) return@launch
 
+                        when (val result : Result<Weather, *> =
+                            repository.getCurrentWeather(currentState.searchWeatherCity)) {
+                            is Result.Error<*> -> {
+                                _Uistate.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        error = result.errorMessage.toString()
+                                    )
+                                }
+                            }
+
+                            is Result.Success-> {
+                                if (currentState.currentWeather != result.data) {
+                                    _Uistate.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            currentWeather = result.data,
+                                            hourlyWeather = result.data.forecastDays.flatMap { it.hourlyForecasts },
+                                            error = null
+                                        )
+                                    }
+                                } else {
+                                    // Data unchanged, just stop loading
+                                    _Uistate.update { it.copy(isLoading = false) }
+                                }
+                            }
+
+                        }
+                }
+            }
+        }
+
+    }
 
 
     private fun fetchWeatherFlow(cityInput: String): StateFlow<WeatherState> {
