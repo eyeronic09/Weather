@@ -9,8 +9,10 @@ data class Weather(
     val conditionText: String,
     val conditionIconUrl: String,
     val windKph: Any,
+    val uv : Number,
     val humidity: Any,
-    val forecastDays: List<ForecastDay>
+    val forecastDays: List<ForecastDay>,
+    val ariQuality : Int
 )
 
 data class ForecastDay(

@@ -16,7 +16,10 @@ object Mapper {
             conditionText = dto.current?.condition?.text ?: "",
             conditionIconUrl = dto.current?.condition?.icon ?: "",
             windKph = dto.current?.windKph ?: 0.0,
+            uv = dto.current?.uv ?: 0.0,
             humidity = dto.current?.humidity ?: 0,
+            ariQuality = dto.current?.airQuality?.usEpaIndex ?: 0,
+
             forecastDays = dto.forecast?.forecastday?.map { forecastDayDto ->
                 ForecastDay(
                     date = forecastDayDto.date,

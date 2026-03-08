@@ -1,8 +1,5 @@
 package com.example.weather.HomeScreen.data.remote.Dtos
 
-
-
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -46,8 +43,12 @@ data class Current(
     val humidity: Long,
     @SerialName("condition")
     val condition: Condition,
+    @SerialName("uv")
+    val uv: Double,
     @SerialName("wind_kph")
     val windKph: Double,
+    @SerialName("air_quality")
+    val airQuality: AirQuality? = null
 )
 
 @Serializable
@@ -61,4 +62,10 @@ data class Condition(
 data class Error(
     val code: Long,
     val message: String,
+)
+
+@Serializable
+data class AirQuality(
+    @SerialName("us-epa-index")
+    val usEpaIndex: Int? = null
 )

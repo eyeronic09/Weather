@@ -32,7 +32,8 @@ fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
 
     val statices = mapOf(
         "Humidity" to weather.humidity,
-        "Wind kph" to weather.windKph
+        "Wind kph" to weather.windKph,
+
     )
 
     val showTheIcon = remember { mutableStateOf(true) }

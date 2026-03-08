@@ -19,7 +19,7 @@ class WeatherApiImpl(private val client: HttpClient) : WeatherApi {
                 parameter("key", api)
                 parameter("days", 3)
                 parameter("q", city)
-                parameter("aqi", "no")
+                parameter("aqi", "yes")
             }
             Log.d("WeatherApi", "Response received: $response")
             response.body()

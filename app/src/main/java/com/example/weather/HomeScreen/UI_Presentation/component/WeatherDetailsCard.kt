@@ -2,19 +2,12 @@ package com.example.weather.HomeScreen.UI_Presentation.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.WindPower
-import androidx.compose.material.icons.filled.Window
-import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.*
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weather.domain.model.Weather
@@ -46,23 +39,51 @@ fun WeatherDetailsCard(
 
             Column(modifier = Modifier.padding()) {
                 Text(weather.conditionText , modifier = Modifier.padding(8.dp))
-                Windspeed(weather.windKph.toString())
+                ariQuality(weather.ariQuality)
             }
         }
     }
 }
 
 @Composable
-private fun Windspeed(windSpeed: String) {
+private fun ariQuality(ariQ: Int) {
     Row(
         modifier = Modifier,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(text = windSpeed)
-        Icon(
-            Icons.Default.WindPower,
-            "wind speed",
-            modifier = Modifier.padding(start = 4.dp)
-        )
+        val result = when(ariQ){
+            1 -> {"good"}
+            2 -> {"moderate"}
+            3 -> {"unhealthy for sensitive people"}
+            4 -> {"unhealthy"}
+            5 -> {"Very unhealthy"}
+            6 -> {"Hazardous"}
+            else -> {
+                "error"
+            }
+        }
+        Text(text = result)
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WeatherDetailsCardPreview() {
+    val sampleWeather = Weather(
+        "London", temperatureC = 25.0,
+        temperatureF = 77.0,
+        conditionText = "Sunny",
+        conditionIconUrl = "//cdn.weatherapi.com/weather/64x64/day/113.png",
+        windKph = 10.0,
+        humidity = 50,
+        forecastDays = emptyList(),
+        uv = 2,
+        region = "re",
+        country = "county",
+        ariQuality = 3,
+    )
+    WeatherTheme {
+        WeatherDetailsCard(weather = sampleWeather)
     }
 }
