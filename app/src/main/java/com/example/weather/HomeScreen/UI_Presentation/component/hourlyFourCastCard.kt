@@ -44,7 +44,6 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast> , isTemp : Boolean 
         snapshotFlow {
             listState.firstVisibleItemIndex
         }.collect { index->
-
             when (index) {
                 in  0..23  -> {
                     status.value = "Today"
@@ -56,8 +55,6 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast> , isTemp : Boolean 
                     status.value = "Day After tomorrow"
                 }
             }
-
-
         }
     }
 
@@ -71,11 +68,11 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast> , isTemp : Boolean 
                 text = "Hourly Forecast",
                 style = MaterialTheme.typography.titleMedium
             )
-
             Button(onClick = {null}) {
                 Text(status.value)
             }
         }
+
 
 
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly, state = listState) {

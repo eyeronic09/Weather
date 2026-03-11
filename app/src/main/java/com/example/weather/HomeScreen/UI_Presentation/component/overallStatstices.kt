@@ -16,7 +16,9 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,24 +27,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.weather.R
 import com.example.weather.domain.model.Weather
+import okhttp3.internal.http2.Header
 
 @Composable
-fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
-
-    val statices = mapOf(
-        "Humidity" to weather.humidity,
-        "Wind kph" to weather.windKph,
-
+fun OverallStatices(weather: Weather, isTemp: Boolean = true) {
+    val stats = listOf<@Composable () -> Unit>(
+        {
+            FeelsLikeCard(
+                "feels like",
+                value = if (isTemp) "${weather.feelsLikeC}°C" else "${weather.feelsLikeF}°F"
+            )
+        },
+        {
+            HeatIndexCard(
+                "Heat index ",
+                value = if (isTemp) "${weather.heatIndexC}°C" else "${weather.heatIndexF}°F"
+            )
+        },
+        {
+            CloudCard(
+                "Cloud",
+                value = weather.cloud.toString(),
+            )
+        }
     )
-
     val showTheIcon = remember { mutableStateOf(true) }
 
     AnimatedVisibility(
         visible = showTheIcon.value,
-        enter = fadeIn()  + slideInVertically(),
+        enter = fadeIn() + slideInVertically(),
         exit = fadeOut() + slideOutVertically()
-    ) { 
+    ) {
         WeatherIcon(
             iconUrl = weather.conditionIconUrl
         )
@@ -61,13 +78,13 @@ fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
             var previousIndex = 0
             snapshotFlow {
                 gridState.firstVisibleItemIndex to
-                gridState.firstVisibleItemScrollOffset
+                        gridState.firstVisibleItemScrollOffset
             }.collect { (index, offset) ->
                 val isScrolled = previousIndex > index || index != 0
 
                 previousIndex = index
-                showTheIcon.value  = !isScrolled
-                Log.d("showTheIconBoolean" , showTheIcon.toString())
+                showTheIcon.value = !isScrolled
+                Log.d("showTheIconBoolean", showTheIcon.toString())
             }
         }
 
@@ -78,7 +95,7 @@ fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
             state = gridState
 
         ) {
-            item (
+            item(
                 span = { GridItemSpan(currentLineSpan = 2) }
             ) {
                 HourlyFourCastCard(
@@ -86,30 +103,12 @@ fun OverallStatices(weather: Weather , isTemp : Boolean = true) {
                     isTemp = isTemp,
                 )
             }
-            items(statices.toList()) { (title, value) ->
-                statCard(
-                    title = title,
-                    value = value.toString()
-                )
+            items(
+                stats,
+            ) { it ->
+                it()
             }
         }
-
     }
-}
 
-
-@Composable
-fun statCard(
-    title : String,
-    value: String
-) {
-    Card() {
-        Column(modifier = Modifier
-            .padding(16.dp)
-            .aspectRatio(1f)) {
-            Text(text = title)
-            Text(text = value)
-
-        }
-    }
 }
