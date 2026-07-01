@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.weather.core.util.WeatherAnimation
 import com.example.weather.domain.model.HourlyForecast
 import com.example.weather.ui.theme.WeatherTheme
 import kotlinx.coroutines.flow.collect
@@ -98,8 +99,8 @@ private fun hourlyVerticalCard(hourly: HourlyForecast , isTemp: Boolean) {
             text = timeString
         )
         WeatherIcon(
-            iconUrl = hourly.icon,
-            contentDescription = hourly.icon,
+            animation = hourly.animation,
+            modifier = Modifier.size(64.dp)
         )
         if (isTemp) {
             Text(text = hourly.tempC.toString())

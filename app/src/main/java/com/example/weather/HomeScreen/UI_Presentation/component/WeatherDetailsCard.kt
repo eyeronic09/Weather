@@ -13,17 +13,20 @@ import com.example.weather.ui.theme.WeatherTheme
 
 @Composable
 fun WeatherDetailsCard(
-    weather: Weather, 
+    weather: Weather,
     isTempC: Boolean = true,
 ) {
-    Card {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically ) {
-            
-            Column {
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     style = MaterialTheme.typography.displayMedium,
                     text = if (isTempC) {
@@ -32,38 +35,36 @@ fun WeatherDetailsCard(
                         "${String.format("%.1f", weather.temperatureF)} °F"
                     }
                 )
-
-            }
-            Column {
                 Text(
                     text = weather.conditionText,
-                    modifier = Modifier.padding().fillMaxWidth(),
-                    textAlign = TextAlign.End
+                    style = MaterialTheme.typography.bodyLarge
                 )
-                AirQualityInfo(weather.airQuality)
             }
+
+            AirQualityInfo(weather.airQuality)
         }
     }
 }
 
 @Composable
 private fun AirQualityInfo(airQ: Int) {
-    Row(
-        modifier = Modifier,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        val result = when(airQ) {
-            1 -> "good"
-            2 -> "moderate"
-            3 -> "unhealthy for sensitive ppl"
-            4 -> "unhealthy"
-            5 -> "Very unhealthy"
-            6 -> "Hazardous"
-            else -> "error"
-        }
+    val result = when (airQ) {
+        1 -> "good"
+        2 -> "moderate"
+        3 -> "unhealthy for sensitive ppl"
+        4 -> "unhealthy"
+        5 -> "Very unhealthy"
+        6 -> "Hazardous"
+        else -> "error"
+    }
+    Column(horizontalAlignment = Alignment.End) {
         Text(
-            text = "Air Quality: $result",
-            modifier = Modifier.padding(8.dp).fillMaxWidth(),
+            text = "Air Quality",
+            style = MaterialTheme.typography.labelSmall
+        )
+        Text(
+            text = result,
+            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.End
         )
     }

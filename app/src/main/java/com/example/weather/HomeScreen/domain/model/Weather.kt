@@ -1,5 +1,7 @@
 package com.example.weather.domain.model
 
+import com.example.weather.core.util.WeatherAnimation
+
 data class Weather(
     val cityName: String,
     val region: String = "",
@@ -9,6 +11,8 @@ data class Weather(
     val isDay: Boolean,
     val conditionText: String,
     val conditionIconUrl: String,
+    val animation: WeatherAnimation,
+    val code: Long,
     val windMph: Double,
     val windKph: Double,
     val windDegree: Int,
@@ -46,5 +50,7 @@ data class HourlyForecast(
     val tempC: Float = 0f,
     val tempF: Float = 0f,
     val icon: String = "",
-    val conditionText: String = ""
+    val conditionText: String = "",
+    val animation: WeatherAnimation = WeatherAnimation.Sunny,
+    val code: Long = 0
 )

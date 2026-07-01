@@ -1,7 +1,7 @@
 package com.example.weather.HomeScreen.data.remote.Mapper
 
-import androidx.compose.ui.semantics.text
 import com.example.weather.HomeScreen.data.remote.Dtos.CurrentWeatherDto
+import com.example.weather.core.util.WeatherAnimation
 import com.example.weather.domain.model.ForecastDay
 import com.example.weather.domain.model.HourlyForecast
 import com.example.weather.domain.model.Weather
@@ -17,6 +17,7 @@ object Mapper {
             isDay = dto.current?.isDay == 1,
             conditionText = dto.current?.condition?.text ?: "",
             conditionIconUrl = dto.current?.condition?.icon ?: "",
+            animation = (dto.current?.condition?.code?.toInt() ?: 0).toWeatherAnimation(),
             windMph = dto.current?.windMph ?: 0.0,
             windKph = dto.current?.windKph ?: 0.0,
             windDegree = dto.current?.windDegree ?: 0,
@@ -50,11 +51,47 @@ object Mapper {
                             tempC = hourlyDto.tempC.toFloat(),
                             tempF = hourlyDto.tempF.toFloat(),
                             icon = hourlyDto.condition.icon,
-                            conditionText = hourlyDto.condition.text
+                            conditionText = hourlyDto.condition.text,
+                            animation = hourlyDto.condition.code.toInt().toWeatherAnimation(),
+                            code = hourlyDto.condition.code
                         )
                     }
                 )
-            } ?: emptyList()
+            } ?: emptyList(),
+            code = dto.current?.condition?.code ?: 0
         )
     }
 }
+
+fun Int.toWeatherAnimation(): WeatherAnimation =
+    when (this) {
+        1000 -> WeatherAnimation.Sunny
+
+        1003 -> WeatherAnimation.PartlyCloudy
+
+        1006, 1009 ->
+            WeatherAnimation.Cloudy
+
+        1030, 1135, 1147 ->
+            WeatherAnimation.Fog
+
+        1063, 1150, 1153,
+        1180, 1183, 1240 ->
+            WeatherAnimation.LightRain
+
+        1186, 1189, 1192,
+        1195, 1243, 1246 ->
+            WeatherAnimation.HeavyRain
+
+        1087, 1273, 1276,
+        1279, 1282 ->
+            WeatherAnimation.Thunderstorm
+
+        1066, 1114, 1117,
+        in 1210..1237,
+        1255, 1258 ->
+            WeatherAnimation.Snow
+
+        else ->
+            WeatherAnimation.Sunny
+    }

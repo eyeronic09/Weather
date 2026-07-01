@@ -98,6 +98,7 @@ dependencies {
     // Coil
     implementation("io.coil-kt.coil3:coil-compose:3.3.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+    implementation("io.coil-kt.coil3:coil-gif:3.3.0")
 
     // Stadia Maps Autocomplete
     implementation("com.stadiamaps:jetpack-compose-autocomplete:3.0.0")

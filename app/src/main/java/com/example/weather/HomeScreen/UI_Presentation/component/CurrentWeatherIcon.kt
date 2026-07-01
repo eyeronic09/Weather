@@ -22,43 +22,18 @@ import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.weather.core.util.WeatherAnimation
+import com.example.weather.core.util.getWeatherGifRes
 import com.example.weather.domain.model.Weather
 
 @Composable
 fun WeatherIcon(
-    iconUrl: String,
+    animation: WeatherAnimation,
+    modifier : Modifier = Modifier
 ) {
-    val finalUrl = if (iconUrl.startsWith("https")) {
-        iconUrl.replace("64x64" , "128x128")
-    } else {
-        "https:$iconUrl".replace("64x64" , "128x128")
-    }
-
-    Log.d("icon" , finalUrl)
-
-    SubcomposeAsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(finalUrl)
-            .crossfade(true)
-            .build(),
-        contentDescription = "Weather Icon",
-        modifier = Modifier.aspectRatio(1f),
-        loading = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(strokeWidth = 2.dp)
-            }
-        },
-        error = {state ->
-            Log.e("COIL_ERROR", state.result.throwable.toString())
-            Icon(
-                imageVector = Icons.Default.Error,
-                contentDescription = "Weather icon fallback",
-                modifier = Modifier.size(100.dp)
-            )
-        }
+    AsyncImage(
+        model = getWeatherGifRes(animation),
+        contentDescription = animation.name,
+        modifier = modifier
     )
-
 }
