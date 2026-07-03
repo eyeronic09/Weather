@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.Default
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.WbSunny
@@ -34,7 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.weather.R
 import com.example.weather.domain.model.Weather
@@ -58,6 +62,11 @@ fun OverallStatices(weather: Weather, isTemp: Boolean = true) {
             CloudCard(
                 "Cloud",
                 value = weather.cloud.toString(),
+            )
+        },{
+            UVCard(
+                "Uv index",
+                value = weather.uv.toString()
             )
         }
     )
@@ -131,7 +140,7 @@ fun FeelsLikeCard(title: String, value: String) {
     WeatherStatCard(
         title = title,
         value = value,
-        icon = Icons.Default.Thermostat,
+        icon = painterResource(R.drawable.temperature),
         contentDescription = "Feels Like"
     )
 }
@@ -141,7 +150,7 @@ fun HeatIndexCard(title: String, value: String) {
     WeatherStatCard(
         title = title,
         value = value,
-        icon = Icons.Default.WbSunny,
+        icon = rememberVectorPainter(Icons.Default.Thermostat),
         contentDescription = "Heat Index"
     )
 }
@@ -151,16 +160,27 @@ fun CloudCard(title: String, value: String) {
     WeatherStatCard(
         title = title,
         value = value,
-        icon = Icons.Default.Cloud,
+        icon = rememberVectorPainter(Icons.Default.Cloud),
         contentDescription = "Cloud"
+    )
+}
+@Composable
+fun UVCard (title: String , value: String){
+    WeatherStatCard(
+        title = title,
+        value = value,
+        icon = painterResource(R.drawable.ultraviolet),
+        contentDescription = "Uv"
     )
 }
 
 @Composable
+f
+@Composable
 fun WeatherStatCard(
     title: String,
     value: String,
-    icon: ImageVector,
+    icon: Painter,
     contentDescription: String?
 ) {
     Card(
@@ -181,7 +201,7 @@ fun WeatherStatCard(
                 modifier = Modifier.fillMaxWidth()
             )
             Icon(
-                imageVector = icon,
+                painter = icon,
                 contentDescription = contentDescription,
                 modifier = Modifier
                     .weight(1f)

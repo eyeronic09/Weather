@@ -84,7 +84,7 @@ class HomeScreenVM(
 
                     when (val result: Result<Weather, *> =
                         repository.getCurrentWeather(currentState.searchWeatherCity)) {
-                        is Result.Error<*> -> {
+                        is Result.Error -> {
                             _Uistate.update {
                                 it.copy(
                                     isLoading = false,
@@ -104,7 +104,6 @@ class HomeScreenVM(
                                     )
                                 }
                             } else {
-                                // Data unchanged, just stop loading
                                 _Uistate.update { it.copy(isLoading = false) }
                             }
                         }
