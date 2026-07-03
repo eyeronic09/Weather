@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weather.core.util.WeatherAnimation
+import com.example.weather.core.util.to12HourFormat
 import com.example.weather.domain.model.HourlyForecast
 import com.example.weather.ui.theme.WeatherTheme
 import kotlinx.coroutines.flow.collect
@@ -77,7 +78,7 @@ fun HourlyFourCastCard(hourlyForecasts: List<HourlyForecast> , isTemp : Boolean 
 
 
         LazyRow(modifier = Modifier, horizontalArrangement = Arrangement.SpaceEvenly, state = listState) {
-            items(hourlyForecasts ,) { item ->
+            items(hourlyForecasts ) { item ->
                 hourlyVerticalCard(hourly = item , isTemp
                 )
             }
@@ -96,7 +97,7 @@ private fun hourlyVerticalCard(hourly: HourlyForecast , isTemp: Boolean) {
     ) {
         val timeString = if (hourly.time.length >= 16) hourly.time.substring(11, 16) else hourly.time
         Text(
-            text = timeString
+            text = timeString.to12HourFormat()
         )
         WeatherIcon(
             animation = hourly.animation,

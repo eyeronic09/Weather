@@ -68,6 +68,17 @@ fun OverallStatices(weather: Weather, isTemp: Boolean = true) {
                 "Uv index",
                 value = weather.uv.toString()
             )
+        },{
+            humidityCard(
+                title = "humidity",
+                value = weather.humidity.toString(),
+            )
+
+        },{
+            VisbileCard(
+                title = "visibile",
+                value = weather.visKm.toString() + "km"
+            )
         }
     )
 
@@ -150,7 +161,7 @@ fun HeatIndexCard(title: String, value: String) {
     WeatherStatCard(
         title = title,
         value = value,
-        icon = rememberVectorPainter(Icons.Default.Thermostat),
+        icon = rememberVectorPainter(Default.Thermostat),
         contentDescription = "Heat Index"
     )
 }
@@ -160,7 +171,7 @@ fun CloudCard(title: String, value: String) {
     WeatherStatCard(
         title = title,
         value = value,
-        icon = rememberVectorPainter(Icons.Default.Cloud),
+        icon = rememberVectorPainter(Default.Cloud),
         contentDescription = "Cloud"
     )
 }
@@ -175,7 +186,23 @@ fun UVCard (title: String , value: String){
 }
 
 @Composable
-f
+fun humidityCard(title: String, value: String) {
+    WeatherStatCard(
+        title = title,
+        value = value,
+        icon = painterResource(R.drawable.outline_humidity_low_24),
+        contentDescription = "humidy"
+    )
+}
+@Composable 
+fun VisbileCard(title: String, value: String){
+    WeatherStatCard(
+        title = title,
+        value = value,
+        icon = painterResource(R.drawable.output_onlinejpgtools),
+        contentDescription = "Visible "
+    )
+}
 @Composable
 fun WeatherStatCard(
     title: String,
