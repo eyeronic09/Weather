@@ -36,7 +36,6 @@ class HomeScreenVM(
                 settingPrefRepository.readDefaultLocation(),
                 _searchCityInput
             ) { homeLocation, searchInput ->
-                // Use search input if provided, otherwise use home location
                 searchInput ?: homeLocation
             }
                 .filterNotNull() // Only proceed if we have a location
