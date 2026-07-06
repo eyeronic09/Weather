@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.repository.WeatherRepository
 import com.example.weather.SettingScreen.domain.repository.SettingPrefRepository
+import com.example.weather.core.util.getWeatherGifRes
 import com.example.weather.domain.model.Weather
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import org.koin.core.KoinApplication.Companion.init
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -27,24 +28,18 @@ class HomeScreenVM(
     private val _Uistate = MutableStateFlow(WeatherState())
     val uiState: StateFlow<WeatherState> = _Uistate.asStateFlow()
 
-    private val _searchCityInput = MutableStateFlow<String?>(null)
+    private val _searchCityInput = MutableStateFlow("")
 
     init {
-        // Combine home location and manual search input
         viewModelScope.launch {
-            combine(
-                settingPrefRepository.readDefaultLocation(),
-                _searchCityInput
-            ) { homeLocation, searchInput ->
-                searchInput ?: homeLocation
-            }
-                .filterNotNull() // Only proceed if we have a location
-                .flatMapLatest { location ->
-                    // Convert location to weather data
-                    fetchWeatherFlow(location)
+            _searchCityInput
+                .flatMapLatest { city ->
+                    fetchWeatherFlow(city)
                 }
-                .collect { weatherState ->
-                    _Uistate.value = weatherState
+                .collect { newState ->
+                    _Uistate.update { currentState ->
+                        newState.copy(isTempC = currentState.isTempC);
+                    }
                 }
         }
 
@@ -73,7 +68,7 @@ class HomeScreenVM(
     fun onEvent(onEvent: HomeScreenEvent) {
         when (onEvent) {
             is HomeScreenEvent.UpdateSearchCityInput -> {
-                _searchCityInput.value = onEvent.city.ifBlank { null }
+                _searchCityInput.value = onEvent.city
             }
 
             is HomeScreenEvent.onRefresh -> {

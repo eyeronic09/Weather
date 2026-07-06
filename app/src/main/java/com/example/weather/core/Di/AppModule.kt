@@ -13,6 +13,7 @@ import com.example.weather.SearchScreen.Data.Remote.autoSearchApi.AutoSearchImpl
 import com.example.weather.SearchScreen.Data.Remote.Repository.AutoSearchRepositoryImpl
 import com.example.weather.SearchScreen.Domain.Repository.AutoSearchRepository
 import com.example.weather.core.NetworkClient
+import com.example.weather.core.util.LocationService
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,8 +21,11 @@ val appModule = module {
     // Single instance of the HttpClient from your NetworkClient object
     single { NetworkClient.client }
 
+    // Location Service
+    single { LocationService(get()) }
+
     // Weather API dependencies
-    single<WeatherApi> { WeatherApiImpl(get()) }
+    single<WeatherApi> { WeatherApiImpl(get() , get()) }
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
 
     // Location preferences repository

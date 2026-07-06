@@ -3,7 +3,6 @@ package com.example.weather
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,10 +15,12 @@ import com.example.weather.ui.theme.WeatherTheme
 
 class MainActivity : ComponentActivity() {
     private val requestLocationPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ){
+        contract = ActivityResultContracts.RequestPermission(),
+        callback = { isBoolean : Boolean ->
 
-    }
+        }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +28,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherTheme {
                 Navigator(
-                    screen = HomeScreen("")
+
+                    screen = HomeScreen(
+                        locationName = ""
+                    )
                 )
             }
         }
@@ -37,10 +41,10 @@ class MainActivity : ComponentActivity() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        } else {
-            Log.d("PermissionLocation", "Permissison Granted ${0}")
         }
     }
+
+
 
 }
 

@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.datastore.pref)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -102,5 +103,8 @@ dependencies {
 
     // Stadia Maps Autocomplete
     implementation("com.stadiamaps:jetpack-compose-autocomplete:3.0.0")
+
+    // Coroutines Play Services
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
 }
