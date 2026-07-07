@@ -3,7 +3,8 @@ package com.example.weather.HomeScreen.domain.repository
 import com.example.weather.HomeScreen.data.remote.Mapper.Result
 import com.example.weather.HomeScreen.domain.model.WeatherError
 import com.example.weather.domain.model.Weather
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface WeatherRepository {
-    suspend fun getCurrentWeather(city : String) : Result<Weather, WeatherError>
+    suspend fun getCurrentWeather(city: String) : Result<Weather, WeatherError>
 }
